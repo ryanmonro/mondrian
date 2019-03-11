@@ -22,7 +22,7 @@ export default class Board extends Component {
     let data = this.state.data
     return (
       <div className="Board">
-        { data.map((v, k) => <Row data={v} key={k} row={k} tileClicked={this.change}></Row> ) }
+        { data.map((v, k) => <Row data={v} key={k} row={k} tileClicked={this.change} position={this.props.position}></Row> ) }
       </div>
     )
   }

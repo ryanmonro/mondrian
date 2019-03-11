@@ -6,7 +6,8 @@ function randomBoard(){
   let board = []
   for(var i = 0; i < 4; i++){
     var row = []
-    for(var t = 0; t < 4; t++){
+    let width = Math.ceil(Math.random() * 8)
+    for(var t = 0; t < width; t++){
       row.push(Math.floor(Math.random() * 6))
     }
     board.push(row)
@@ -18,14 +19,26 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
-      data: randomBoard()
-    }    
+      data: randomBoard(),
+      position: 1
+    }
+  }
+  componentDidMount(){
+    this.timer = setInterval(() => {
+      let position = this.state.position
+      if (position === 100) {
+        position = 1
+      } else {
+        position++
+      }
+      this.setState({position: position})
+    }, 20) 
   }
   render() {
     let data = this.state.data
     return (
       <div className="App">
-        <Board data={data}>
+        <Board data={data} position={this.state.position}>
         </Board>
       </div>
     );

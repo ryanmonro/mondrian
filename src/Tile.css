@@ -1,7 +1,10 @@
-.Tile {
+.TileInner {
+  height: 100%;
+}
+
+.Tile{
+  height: 200px;
   box-sizing: border-box;
   float:left;
-  height: 200px;
-  width: 25%;
   border: 5px solid #212121;
 }
