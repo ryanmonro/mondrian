@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import './Tile.css';
 
 const colours = {
-  "white": "#FFFFFF",
+  "black": "#212121",
   "red": "#F70F0F",
   "yellow": "#FCE318",
   "blue": "#0F7FBF",
   "grey": "#A3A3A3",
-  "black": "#212121"
+  "white": "#FFFFFF"
 }
 
 const colour = (index) => colours[Object.keys(colours)[index]]
