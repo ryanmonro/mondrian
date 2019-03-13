@@ -5,24 +5,24 @@ import './Board.css';
 export default class Board extends Component {
   constructor(props){
     super(props)
-    this.change = this.change.bind(this)
-    this.addTile = this.addTile.bind(this)
     this.state = {
       data: props.data,
       functions: {
         'change': this.change,
         'add': this.addTile,
-        'subtract': this.subtractTile
+        'subtract': this.subtractTile,
+        'addRow': this.addRow,
+        'subtractRow': this.subtractRow
       }
     }
   }
-  change(row, col){
+  change = (row, col) => {
     let data = this.state.data
     let oldValue = data[row][col]
     data[row][col] = (oldValue + 1) % 6
     this.setState({data: data})
   }
-  addTile(row){
+  addTile = (row) => {
     let data = this.state.data
     if (data[row].length < 9){
       data[row].push(0)
@@ -33,6 +33,20 @@ export default class Board extends Component {
     let data = this.state.data
     if (data[row].length > 1){
       data[row].pop()
+      this.setState({data: data})
+    }
+  }
+  addRow = () => {
+    let data = this.state.data
+    if (data.length < 8){
+      data.push([0,0,0,0])
+      this.setState({data: data})
+    }
+  }
+  subtractRow = () => {
+    let data = this.state.data
+    if (data.length > 1){
+      data.pop()
       this.setState({data: data})
     }
   }

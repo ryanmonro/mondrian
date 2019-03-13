@@ -18,6 +18,7 @@ export default class Row extends Component {
     let {data, row} = this.props
     return (
       <div className="RowOuter">
+        { row === 0 ? <div className="rowButton long subtract">-</div> : "" }
         <div className="rowButton subtract" onClick={ this.subtract }>
           –
         </div>
@@ -34,7 +35,10 @@ export default class Row extends Component {
         <div className="rowButton add" onClick={ this.add }>
           +
         </div>
+        { row === 3 ? <div className="rowButton long add">+</div> : "" }
+
       </div>
     )
   }
+  // magic number at 38 needs some work
 }

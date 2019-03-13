@@ -10,7 +10,8 @@
 }
 
 .rowButton {
-  display: none;
+  display: inline;
+  visibility: hidden;
   width: 40px;
   height: 100%;
   position: absolute;
@@ -21,7 +22,7 @@
   font-family: Helvetica;
   font-weight: 500px;
   font-size: 20px;
-  line-height: 100%;
+  line-height: 200px;
   user-select: none;
 }
 
@@ -33,7 +34,23 @@
   left: -40px;
 }
 
-.RowOuter:hover .rowButton {
-  display: inline;
+.rowButton.long {
+  width: 800px;
+  height: 40px;
+  left: 0px;
+  line-height: 40px;
+  display: block;
+}
+.rowButton.long.add {
+  /*position: relative;*/
+  top: 200px;
+}
+
+.rowButton.long.subtract {
+  top: -40px;
+}
+
+.RowOuter:hover .rowButton, .RowOuter:first-child:hover .rowButton.long, .RowOuter:last-child:hover .rowButton.long {
+  visibility: visible;
   cursor: pointer;
 }
