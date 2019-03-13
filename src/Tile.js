@@ -19,29 +19,22 @@ export default class Tile extends Component {
   }
   change(event){
     event.preventDefault()
-    const {tileClicked, row, col} = this.props
-    tileClicked(row, col)
-  }
-  isPlaying(){
-    const {position, cols, col} = this.props
-    const percent = position / 100
-    return percent >= col / cols && percent <= (col + 1) / cols
+    const {functions, row, col} = this.props
+    functions.change(row, col)
   }
   render(){
     return (
       <div className="Tile"
         style={{
-            width: this.props.width + "%",
-            padding: this.isPlaying() ? "2px" : 0
+            width: this.props.width,
+            padding: this.props.playing ? "2px" : 0
         }}
       >
         <div 
           className="TileInner" 
           onClick={this.change}
           style={{
-            background: colour(this.props.data),
-            // filter: this.props.playing ? "brightness(150%)" : "none"
-            // opacity: this.props.playing ? 0.8 : 1
+            background: colour(this.props.value)
           }}>
         </div>
       </div>

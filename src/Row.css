@@ -1,3 +1,39 @@
+.RowOuter {
+  width: 100%;
+  position: relative;
+}
+
 .Row {
   overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.rowButton {
+  display: none;
+  width: 40px;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  background: #212121;
+  border-radius: 10px;
+  color: white;
+  font-family: Helvetica;
+  font-weight: 500px;
+  font-size: 20px;
+  line-height: 100%;
+  user-select: none;
+}
+
+.rowButton.add {
+  left: 800px;
+}
+
+.rowButton.subtract {
+  left: -40px;
+}
+
+.RowOuter:hover .rowButton {
+  display: inline;
+  cursor: pointer;
 }
