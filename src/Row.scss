@@ -18,28 +18,35 @@
   font-size: 20px;
   line-height: 200px;
   user-select: none;
+  &:hover {
+    border: white 1px solid;
+    color: white;
+  }
   &.add {
     left: 800px;
+    border-radius: 0px 10px 10px 0px;
+    &.long{
+      top: 805px;
+      display: none;
+      border-radius: 0px 0px 10px 10px;
+    }
   }
 
   &.subtract {
     left: -40px;
+    border-radius: 10px 0px 0px 10px;
+    &.long{
+      top: -45px;
+      border-radius: 10px 10px 0px 0px;
+    }
   }
 
   &.long {
-    width: 800px;
+    width: 810px;
     height: 40px;
-    left: 0px;
+    left: -5px;
     line-height: 40px;
     display: block;
-    &.add {
-      top: 800px;
-      display: none;
-    }
-
-    &.subtract {
-      top: -40px;
-    }
   }
 }
 
