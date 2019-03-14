@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Tile from './Tile';
-import './Row.css';
+import './Row.scss';
 
 export default class Row extends Component {
   tileIsPlaying(col, cols){
@@ -34,5 +34,4 @@ export default class Row extends Component {
       </div>
     )
   }
-  // magic number at 38 needs some work
 }
