@@ -21,19 +21,19 @@ class App extends Component {
     super(props)
     this.state = {
       data: randomBoard(),
-      position: 1
+      position: 0
     }
   }
   componentDidMount(){
-    this.timer = setInterval(() => {
-      let position = this.state.position
-      if (position === 100) {
-        position = 1
-      } else {
-        position++
-      }
-      this.setState({position: position})
-    }, 20) 
+    // this.timer = setInterval(() => {
+    //   let position = this.state.position
+    //   if (position === 100) {
+    //     position = 1
+    //   } else {
+    //     position++
+    //   }
+    //   this.setState({position: position})
+    // }, 20) 
   }
   render() {
     let data = this.state.data

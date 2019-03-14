@@ -6,6 +6,7 @@ export default class Row extends Component {
   tileIsPlaying(col, cols){
     const {position} = this.props
     const percent = position / 100
+    if (position === 0) return false
     return percent >= col / cols && percent <= (col + 1) / cols
   }
   render(){
