@@ -13,26 +13,18 @@ const colours = {
 const colour = (index) => colours[Object.keys(colours)[index]]
 
 export default class Tile extends Component {
-  constructor(props){
-    super(props)
-    this.change = this.change.bind(this)
-  }
-  change(event){
-    event.preventDefault()
-    const {functions, row, col} = this.props
-    functions.change(row, col)
-  }
   render(){
     return (
-      <div className="Tile"
+      <div className={this.props.playing ? "Tile playing" : "Tile"}
         style={{
-            width: this.props.width,
-            padding: this.props.playing ? "2px" : 0
+          width: this.props.width
         }}
       >
         <div 
           className="TileInner" 
-          onClick={this.change}
+          onClick={this.props.functions.change}
+          data-row={this.props.row}
+          data-col={this.props.col}
           style={{
             background: colour(this.props.value)
           }}>

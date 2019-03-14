@@ -8,18 +8,12 @@ export default class Row extends Component {
     const percent = position / 100
     return percent >= col / cols && percent <= (col + 1) / cols
   }
-  add = ()=>{
-    this.props.functions.add(this.props.row)
-  }
-  subtract = ()=>{
-    this.props.functions.subtract(this.props.row) 
-  }
   render(){
-    let {data, row} = this.props
+    let {data, row, functions} = this.props
     return (
       <div className="RowOuter">
-        { row === 0 ? <div className="rowButton long subtract">-</div> : "" }
-        <div className="rowButton subtract" onClick={ this.subtract }>
+        <div className="rowButton subtract" 
+          onClick={ () => functions.subtract(row) }>
           –
         </div>
         <div className="Row">
@@ -32,11 +26,9 @@ export default class Row extends Component {
             </Tile> ) 
           }
         </div>
-        <div className="rowButton add" onClick={ this.add }>
+        <div className="rowButton add" onClick={ () => functions.add(row) }>
           +
         </div>
-        { row === 3 ? <div className="rowButton long add">+</div> : "" }
-
       </div>
     )
   }

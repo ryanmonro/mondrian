@@ -8,3 +8,7 @@
   float:left;
   border: 5px solid #212121;
 }
+
+.Tile.playing {
+  padding: 3px;
+}

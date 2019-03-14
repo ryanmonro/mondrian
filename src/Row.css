@@ -43,14 +43,16 @@
 }
 .rowButton.long.add {
   /*position: relative;*/
-  top: 200px;
+  top: 800px;
+  display: none;
 }
 
 .rowButton.long.subtract {
   top: -40px;
 }
 
-.RowOuter:hover .rowButton, .RowOuter:first-child:hover .rowButton.long, .RowOuter:last-child:hover .rowButton.long {
+.RowOuter:hover .rowButton, .Board:hover .rowButton.long {
   visibility: visible;
+  display: block;
   cursor: pointer;
 }
