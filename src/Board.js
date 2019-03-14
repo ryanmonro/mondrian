@@ -10,11 +10,11 @@ export default class Board extends Component {
       functions: {
         'change': this.change.bind(this),
         'add': this.addTile.bind(this),
-        'subtract': this.subtractTile.bind(this),
-        'addRow': this.addRow,
-        'subtractRow': this.subtractRow
+        'subtract': this.subtractTile.bind(this)
       }
     }
+    this.addRow = this.addRow.bind(this)
+    this.subtractRow = this.subtractRow.bind(this)
   }
   change(e){
     const {row, col} = e.target.dataset
@@ -23,17 +23,17 @@ export default class Board extends Component {
     data[row][col] = (oldValue + 1) % 6
     this.setState({data: data})
   }
-  addTile(row){
+  addTile(e){
     let data = this.state.data
-    console.log(data)
-    // const row = e.target.dataset.row
+    const row = e.target.parentNode.dataset.row
     if (data[row].length < 9){
       data[row].push(0)
       this.setState({data: data})
     }
   }
-  subtractTile(row){
+  subtractTile(e){
     let data = this.state.data
+    const row = e.target.parentNode.dataset.row
     if (data[row].length > 1){
       data[row].pop()
       this.setState({data: data})
@@ -57,9 +57,14 @@ export default class Board extends Component {
     let data = this.state.data
     return (
       <div className="Board">
-        <div className="rowButton long subtract">–</div>
-        { data.map((v, k) => <Row data={v} key={k} row={k} functions={this.state.functions} position={this.props.position}></Row> ) }
-        <div className="rowButton long add">+</div>
+        <div className="rowButton long subtract" onClick={this.subtractRow}>–</div>
+        { data.map((v, k) => 
+          <Row data={v} key={k} row={k} 
+            functions={this.state.functions} 
+            position={this.props.position} 
+            height={ (800 / data.length).toString() + "px" }>
+          </Row> ) }
+        <div className="rowButton long add" onClick={this.addRow}>+</div>
       </div>
     )
   }

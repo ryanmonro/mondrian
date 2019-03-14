@@ -11,22 +11,24 @@ export default class Row extends Component {
   render(){
     let {data, row, functions} = this.props
     return (
-      <div className="RowOuter">
+      <div className="RowOuter" data-row={row} >
         <div className="rowButton subtract" 
-          onClick={ () => functions.subtract(row) }>
+          onClick={ functions.subtract }
+          style={{ lineHeight: this.props.height }} >
           –
         </div>
-        <div className="Row">
+        <div className="Row" style={{ height: this.props.height }}>
           { data.map((v, k) => 
             <Tile value={v} key={k} row={row} col={k} 
-              functions={this.props.functions} 
+              functions={functions} 
               width={ (100 / data.length).toString() + "%" }
-              playing={ this.tileIsPlaying(k , data.length) }
+              playing={ this.tileIsPlaying(k, data.length) }
             >
             </Tile> ) 
           }
         </div>
-        <div className="rowButton add" onClick={ () => functions.add(row) }>
+        <div className="rowButton add" onClick={ functions.add }
+          style={{ lineHeight: this.props.height }} >
           +
         </div>
       </div>

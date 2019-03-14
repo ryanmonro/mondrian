@@ -4,7 +4,8 @@ import Board from './Board';
 
 function randomBoard(){
   let board = []
-  for(var i = 0; i < 4; i++){
+  const height = Math.ceil(Math.random() * 8)
+  for(var i = 0; i < height; i++){
     var row = []
     let width = Math.ceil(Math.random() * 8)
     for(var t = 0; t < width; t++){

@@ -3,7 +3,7 @@
 }
 
 .Tile {
-  height: 200px;
+  height: 100%;
   box-sizing: border-box;
   float:left;
   border: 5px solid #212121;
