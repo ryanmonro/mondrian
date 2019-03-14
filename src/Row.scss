@@ -1,7 +1,3 @@
-.RowOuter {
-  position: relative;
-}
-
 .Row {
   overflow: hidden;
   margin: 0 auto;
@@ -22,30 +18,33 @@
   font-size: 20px;
   line-height: 200px;
   user-select: none;
+  &.add {
+    left: 800px;
+  }
+
+  &.subtract {
+    left: -40px;
+  }
+
+  &.long {
+    width: 800px;
+    height: 40px;
+    left: 0px;
+    line-height: 40px;
+    display: block;
+    &.add {
+      top: 800px;
+      display: none;
+    }
+
+    &.subtract {
+      top: -40px;
+    }
+  }
 }
 
-.rowButton.add {
-  left: 800px;
-}
-
-.rowButton.subtract {
-  left: -40px;
-}
-
-.rowButton.long {
-  width: 800px;
-  height: 40px;
-  left: 0px;
-  line-height: 40px;
-  display: block;
-}
-.rowButton.long.add {
-  top: 800px;
-  display: none;
-}
-
-.rowButton.long.subtract {
-  top: -40px;
+.RowOuter {
+  position: relative;
 }
 
 .RowOuter:hover .rowButton, .Board:hover .rowButton.long {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Tile.css';
+import './Tile.scss';
 
 const colours = {
   "black": "#212121",
