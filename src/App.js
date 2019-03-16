@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Board from './Board';
+import Tone from 'tone';
 
 function randomBoard(){
   let board = []
@@ -19,26 +20,52 @@ function randomBoard(){
 class App extends Component {
   constructor(props){
     super(props)
+    this.start = this.start.bind(this)
     this.state = {
       data: randomBoard(),
       position: 0
     }
   }
   componentDidMount(){
-    // this.timer = setInterval(() => {
-    //   let position = this.state.position
-    //   if (position === 100) {
-    //     position = 1
-    //   } else {
-    //     position++
-    //   }
-    //   this.setState({position: position})
-    // }, 20) 
+    Tone.Transport.PPQ = 24
+    Tone.Transport.scheduleRepeat((time)=>{
+      let {position, data, playPosition} = this.state
+      // play notes here
+      for(let i = 0; i < data.length; i++){
+        const row = data[i]
+        const pos = playPosition[i]
+        if ((position / 100) > (pos + 1) / row.length ) {
+          console.log(i)
+          playPosition[i] = playPosition[i] + 1
+          if (playPosition[i] === row.length) {
+            playPosition[i] = 0
+          }
+        }
+      }
+      if (position === 0) {
+        console.log('one!')
+      }
+      if (position >= 100) {
+        position = 1
+      } else {
+        position += (100 / (24 * 4))
+      }
+      this.setState({position: position, playPosition: playPosition})
+    }, "1i")
+  }
+  start(){
+    Tone.Transport.start()
+    let playPosition = []
+    for(let i = 0; i < this.state.data.length; i++){
+      playPosition[i] = 0
+    }
+    this.setState({position: 1, playPosition: playPosition})
   }
   render() {
     let data = this.state.data
     return (
       <div className="App">
+        <button onClick={this.start}>Start</button>
         <Board data={data} position={this.state.position}>
         </Board>
       </div>
