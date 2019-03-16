@@ -24,7 +24,23 @@ class App extends Component {
     this.state = {
       data: randomBoard(),
       position: 0,
-      synths: [new Tone.Synth().toMaster(), new Tone.Synth().toMaster(), new Tone.Synth().toMaster(), new Tone.Synth().toMaster(), new Tone.Synth().toMaster(), new Tone.Synth().toMaster(), new Tone.Synth().toMaster(), new Tone.Synth().toMaster()]
+      synths: [new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster(), new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster(), new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster(), new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster(), new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster(), new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster(), new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster(), new Tone.Synth({oscillator  : {
+type  : "sine"}
+}).toMaster()]
     }
   }
   componentDidMount(){
