@@ -41,7 +41,7 @@ export default class Board extends Component {
   }
   addRow(){
     let data = this.state.data
-    if (data.length < 8){
+    if (data.length < 6){
       data.push([0,0,0,0])
       this.setState({data: data})
     }

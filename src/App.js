@@ -5,7 +5,7 @@ import Tone from 'tone';
 
 function randomBoard(){
   let board = []
-  const height = Math.ceil(Math.random() * 8)
+  const height = Math.ceil(Math.random() * 6)
   for(var i = 0; i < height; i++){
     var row = []
     let width = Math.ceil(Math.random() * 8)
@@ -20,48 +20,38 @@ function randomBoard(){
 class App extends Component {
   constructor(props){
     super(props)
+    let synths = []
+    for (let i = 0; i < 6; i++){
+      synths.push(new Tone.Synth({
+        oscillator  : {
+          type  : "sine"
+        }
+      }).toMaster())
+    }
     this.start = this.start.bind(this)
     this.state = {
       data: randomBoard(),
       position: 0,
-      synths: [new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster(), new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster(), new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster(), new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster(), new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster(), new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster(), new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster(), new Tone.Synth({oscillator  : {
-type  : "sine"}
-}).toMaster()]
+      synths: synths
     }
+
   }
   componentDidMount(){
     Tone.Transport.PPQ = 24
     Tone.Transport.scheduleRepeat((time)=>{
       let {position, data, playPosition, synths} = this.state
-      // for(let i = 0; i < data.length; i++){
       for(const [i, row] of data.entries()){
         const notes = [0, 'C', 'D', 'E', 'G', 'A']
-        // const row = data[i]
-        const pos = playPosition[i]  // 4
-        if ((position / 100) > (pos) / row.length 
-            && !(pos === 0 && (position / 100 > (row.length - 1) / row.length))
-          ) {
-          const note = notes[row[pos]]
-          if( note !== 0){
-            synths[i].triggerAttackRelease(note + (8 - i).toString(), "16n", time)
-          }
-          playPosition[i] = playPosition[i] + 1
+        let newPos = Math.floor((position / 100) * row.length)
+        if (playPosition[i] != newPos) {
+          playPosition[i] = newPos
           if (playPosition[i] === row.length) {
             playPosition[i] = 0
+          }
+          const note = notes[row[playPosition[i]]]
+          console.log(note, row, playPosition, i)
+          if(note !== 0){
+            synths[i].triggerAttackRelease(note + (i + 2).toString(), "16n", time)
           }
         }
       }
@@ -77,8 +67,8 @@ type  : "sine"}
     Tone.Transport.start()
     Tone.start()
     let playPosition = []
-    for(let i = 0; i < 8; i++){
-      playPosition[i] = 0
+    for(let i = 0; i < 6; i++){
+      playPosition[i] = -1
     }
     this.setState({position: 1, playPosition: playPosition})
   }
