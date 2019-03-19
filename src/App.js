@@ -3,12 +3,9 @@ import './App.css';
 import Board from './Board';
 import Tone from 'tone';
 import Button from '@material-ui/core/Button';
-// import Checkbox from '@material-ui/core/Checkbox';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import FormGroup from '@material-ui/core/FormGroup';
-// import { withStyles } from '@material-ui/core/styles';
 
 function randomBoard(){
   let board = []
@@ -36,12 +33,14 @@ class App extends Component {
     let synths = []
     for (let i = 0; i < 6; i++){
       synths.push(new Tone.Synth({
-        oscillator  : {
-          type  : "sine"
-        }
+        oscillator: {
+          type: "sine"
+        },
+        volume: -12
       }).toMaster())
     }
     this.start = this.start.bind(this)
+    this.stop = this.stop.bind(this)
     this.state = {
       data: randomBoard(),
       position: 0,
@@ -137,6 +136,14 @@ class App extends Component {
     }
     this.setState({position: 1, playPosition: playPosition})
   }
+  stop(){
+    Tone.Transport.stop()
+    let playPosition = []
+    for(let i = 0; i < 6; i++){
+      playPosition[i] = -1
+    }
+    this.setState({position: 0, playPosition: playPosition})
+  }
   render() {
     let data = this.state.data
     return (
@@ -144,6 +151,7 @@ class App extends Component {
         <div className="controls">
         <MuiThemeProvider theme={theme}>
           <Button variant="contained" color="primary" onClick={this.start}>Start</Button>
+          <Button variant="contained" color="primary" onClick={this.stop}>Stop</Button>
           <FormControlLabel
           style={{paddingLeft: "20px"}}
           control={

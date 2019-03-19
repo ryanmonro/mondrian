@@ -1,6 +1,7 @@
 .Board {
   position: relative;
   width: 800px;
+  /*max-width: 100%;*/
   margin: 0 auto;
   border: 5px solid #212121;
   background: #212121;
