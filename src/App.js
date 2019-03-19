@@ -20,6 +20,8 @@ function randomBoard(){
 class App extends Component {
   constructor(props){
     super(props)
+    this.addRow = this.addRow.bind(this)
+    this.subtractRow = this.subtractRow.bind(this)
     let synths = []
     for (let i = 0; i < 6; i++){
       synths.push(new Tone.Synth({
@@ -32,7 +34,12 @@ class App extends Component {
     this.state = {
       data: randomBoard(),
       position: 0,
-      synths: synths
+      synths: synths,
+      functions: {
+        'change': this.change.bind(this),
+        'add': this.addTile.bind(this),
+        'subtract': this.subtractTile.bind(this)
+      },
     }
 
   }
@@ -57,11 +64,50 @@ class App extends Component {
       }
       if (position >= 100) {
         position = 1
+        const newData = randomBoard()
+        this.setState({data: newData})
       } else {
         position += (100 / (24 * 4))
       }
       this.setState({position: position, playPosition: playPosition})
     }, "1i")
+  }
+  change(e){
+    const {row, col} = e.target.dataset
+    let data = this.state.data
+    let oldValue = data[row][col]
+    data[row][col] = (oldValue + 1) % 6
+    this.setState({data: data})
+  }
+  addTile(e){
+    let data = this.state.data
+    const row = e.target.parentNode.dataset.row
+    if (data[row].length < 9){
+      data[row].push(0)
+      this.setState({data: data})
+    }
+  }
+  subtractTile(e){
+    let data = this.state.data
+    const row = e.target.parentNode.dataset.row
+    if (data[row].length > 1){
+      data[row].pop()
+      this.setState({data: data})
+    }
+  }
+  addRow(){
+    let data = this.state.data
+    if (data.length < 6){
+      data.push([0,0,0,0])
+      this.setState({data: data})
+    }
+  }
+  subtractRow(){
+    let data = this.state.data
+    if (data.length > 1){
+      data.pop()
+      this.setState({data: data})
+    }
   }
   start(){
     Tone.Transport.start()
@@ -77,7 +123,7 @@ class App extends Component {
     return (
       <div className="App">
         <button onClick={this.start}>Start</button>
-        <Board data={data} position={this.state.position}>
+        <Board data={data} position={this.state.position} functions={this.state.functions}>
         </Board>
       </div>
     );
