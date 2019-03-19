@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import Board from './Board';
 import Tone from 'tone';
+import Button from '@material-ui/core/Button';
+// import Checkbox from '@material-ui/core/Checkbox';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+// import FormGroup from '@material-ui/core/FormGroup';
+// import { withStyles } from '@material-ui/core/styles';
 
 function randomBoard(){
   let board = []
@@ -16,6 +23,12 @@ function randomBoard(){
   }
   return board
 }
+
+const theme = createMuiTheme({
+  palette: {
+    type: 'dark'
+  }
+});
 
 class App extends Component {
   constructor(props){
@@ -33,6 +46,7 @@ class App extends Component {
       data: randomBoard(),
       position: 0,
       synths: synths,
+      fullAuto: false,
       functions: {
         'change': this.change.bind(this),
         'add': this.addTile.bind(this),
@@ -50,7 +64,7 @@ class App extends Component {
       for(const [i, row] of data.entries()){
         const notes = [0, 'C', 'D', 'E', 'G', 'A']
         let newPos = Math.floor((position / 100) * row.length)
-        if (playPosition[i] != newPos) {
+        if (playPosition[i] !== newPos) {
           playPosition[i] = newPos
           if (playPosition[i] === row.length) {
             playPosition[i] = 0
@@ -64,8 +78,10 @@ class App extends Component {
       }
       if (position >= 100) {
         position = 1
-        const newData = randomBoard()
-        this.setState({data: newData})
+        if (this.state.fullAuto){
+          const newData = randomBoard()
+          this.setState({data: newData})
+        }
       } else {
         position += (100 / (24 * 4))
       }
@@ -109,6 +125,9 @@ class App extends Component {
       this.setState({data: data})
     }
   }
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.checked });
+  }
   start(){
     Tone.Transport.start()
     Tone.start()
@@ -122,7 +141,23 @@ class App extends Component {
     let data = this.state.data
     return (
       <div className="App">
-        <button onClick={this.start}>Start</button>
+        <div className="controls">
+        <MuiThemeProvider theme={theme}>
+          <Button variant="contained" color="primary" onClick={this.start}>Start</Button>
+          <FormControlLabel
+          style={{paddingLeft: "20px"}}
+          control={
+            <Switch
+              color="primary"
+              checked={this.state.fullAuto}
+              onChange={this.handleChange('fullAuto')}
+              value="fullAuto"
+            />
+          }
+          label="Full Auto"
+          />
+        </MuiThemeProvider>
+        </div>
         <Board data={data} position={this.state.position} functions={this.state.functions}>
         </Board>
       </div>

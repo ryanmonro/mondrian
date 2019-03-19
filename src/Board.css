@@ -1,7 +1,7 @@
 .Board {
   position: relative;
   width: 800px;
-  margin: 50px auto;
+  margin: 0 auto;
   border: 5px solid #212121;
   background: #212121;
 }
