@@ -20,8 +20,6 @@ function randomBoard(){
 class App extends Component {
   constructor(props){
     super(props)
-    this.addRow = this.addRow.bind(this)
-    this.subtractRow = this.subtractRow.bind(this)
     let synths = []
     for (let i = 0; i < 6; i++){
       synths.push(new Tone.Synth({
@@ -38,7 +36,9 @@ class App extends Component {
       functions: {
         'change': this.change.bind(this),
         'add': this.addTile.bind(this),
-        'subtract': this.subtractTile.bind(this)
+        'subtract': this.subtractTile.bind(this),
+        'addRow': this.addRow.bind(this),
+        'subtractRow': this.subtractRow.bind(this)
       },
     }
 
