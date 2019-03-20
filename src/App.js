@@ -1,11 +1,15 @@
-import React, { Component } from 'react';
-import './App.css';
-import Board from './Board';
-import Tone from 'tone';
-import Button from '@material-ui/core/Button';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+import React, { Component } from 'react'
+import './App.css'
+import Board from './Board'
+import Tone from 'tone'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Button from '@material-ui/core/Button'
+import PlayArrowIcon from '@material-ui/icons/PlayArrow'
+import StopIcon from '@material-ui/icons/Stop'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import Switch from '@material-ui/core/Switch'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 function randomBoard(){
   let board = []
@@ -24,6 +28,9 @@ function randomBoard(){
 const theme = createMuiTheme({
   palette: {
     type: 'dark'
+  },
+  typography: {
+    useNextVariants: true,
   }
 });
 
@@ -44,6 +51,7 @@ class App extends Component {
     this.state = {
       data: randomBoard(),
       position: 0,
+      playing: false,
       synths: synths,
       fullAuto: false,
       functions: {
@@ -69,7 +77,6 @@ class App extends Component {
             playPosition[i] = 0
           }
           const note = notes[row[playPosition[i]]]
-          console.log(note, row, playPosition, i)
           if(note !== 0){
             synths[i].triggerAttackRelease(note + (i + 2).toString(), "16n", time)
           }
@@ -134,7 +141,7 @@ class App extends Component {
     for(let i = 0; i < 6; i++){
       playPosition[i] = -1
     }
-    this.setState({position: 1, playPosition: playPosition})
+    this.setState({position: 1, playPosition: playPosition, playing: true})
   }
   stop(){
     Tone.Transport.stop()
@@ -142,21 +149,21 @@ class App extends Component {
     for(let i = 0; i < 6; i++){
       playPosition[i] = -1
     }
-    this.setState({position: 0, playPosition: playPosition})
+    this.setState({position: 0, playPosition: playPosition, playing: false})
   }
   render() {
     let data = this.state.data
     return (
       <div className="App">
-        <div className="controls">
         <MuiThemeProvider theme={theme}>
-          <Button variant="contained" color="primary" onClick={this.start}>Start</Button>
-          <Button variant="contained" color="primary" onClick={this.stop}>Stop</Button>
+          <AppBar position="static">
+          <Toolbar>
+          <Button variant="contained" onClick={this.start} disabled={this.state.playing}><PlayArrowIcon /></Button>
+          <Button variant="contained" onClick={this.stop} disabled={!this.state.playing}><StopIcon /></Button>
           <FormControlLabel
           style={{paddingLeft: "20px"}}
           control={
             <Switch
-              color="primary"
               checked={this.state.fullAuto}
               onChange={this.handleChange('fullAuto')}
               value="fullAuto"
@@ -164,8 +171,9 @@ class App extends Component {
           }
           label="Full Auto"
           />
+          </Toolbar>
+          </AppBar>
         </MuiThemeProvider>
-        </div>
         <Board data={data} position={this.state.position} functions={this.state.functions}>
         </Board>
       </div>
