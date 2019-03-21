@@ -13,12 +13,18 @@ export default class Row extends Component {
     let {data, row, functions} = this.props
     return (
       <div className="RowOuter" data-row={row} >
-        <div className="rowButton subtract" 
-          onClick={ functions.subtract }
-          style={{ lineHeight: this.props.height }} >
-          –
+        <div className="rowButtonOuter left">
+          <div className="rowButton subtract" 
+            onClick={ functions.subtract }
+            style={{ lineHeight: this.props.height }} >
+            –
+          </div>
         </div>
-        <div className="Row" style={{ height: this.props.height }}>
+        <div className="Row" style={{ 
+          height: this.props.height,
+          borderTop: row === 0 ? "5px solid #212121" : "",
+          borderBottom: row === data.length ? "5px solid #212121" : ""
+        }}>
           { data.map((v, k) => 
             <Tile value={v} key={k} row={row} col={k} 
               functions={functions} 
@@ -28,11 +34,15 @@ export default class Row extends Component {
             </Tile> ) 
           }
         </div>
-        <div className="rowButton add" onClick={ functions.add }
-          style={{ lineHeight: this.props.height }} >
-          +
+        <div className="rowButtonOuter right">
+          <div className="rowButton add" 
+            onClick={ functions.add }
+            style={{ lineHeight: this.props.height }} >
+            +
+          </div>
         </div>
       </div>
     )
   }
 }
+

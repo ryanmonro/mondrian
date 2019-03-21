@@ -1,19 +1,25 @@
 .Row {
   overflow: hidden;
   margin: 0 auto;
+  flex: 1;
+  background: #212121;
+  border-left: 5px solid #212121;
+  border-right: 5px solid #212121;
 }
 
 .RowOuter {
-  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.longButtonOuter {
+  width: 100%;
 }
 
 .rowButton {
-  display: inline;
   opacity: 0;
   width: 40px;
   height: 100%;
-  position: absolute;
-  top: 0px;
   background: #212121;
   border-radius: 10px;
   color: white;
@@ -22,34 +28,28 @@
   font-size: 20px;
   line-height: 200px;
   user-select: none;
+  color: white;
   &.add {
-    left: 805px;
     border-radius: 0px 10px 10px 0px;
     &.long{
-      top: 805px;
       border-radius: 0px 0px 10px 10px;
     }
   }
-
   &.subtract {
-    left: -45px;
     border-radius: 10px 0px 0px 10px;
     &.long{
-      top: -45px;
       border-radius: 10px 10px 0px 0px;
     }
   }
   &.long {
-    visibility: visible;
-    opacity: 0;
-    width: 810px;
-    height: 40px;
-    left: -5px;
-    line-height: 40px;
+    width: initial;
+    margin: 0 40px 0 40px;
+
     display: block;
+    height: 40px;
+    line-height: 40px;
   }
   &:hover {
-    color: white;
     opacity: 1;
     cursor: pointer;
   }

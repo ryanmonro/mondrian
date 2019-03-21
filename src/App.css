@@ -37,9 +37,6 @@ body {
 }
 
 .controls {
-  /*display: flex;
-  align-items:stretch;*/
-  /*background: white;*/
   margin: 20px auto 40px auto;
   width: 100%;
 }

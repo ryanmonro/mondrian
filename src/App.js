@@ -111,7 +111,7 @@ class App extends Component {
   }
   addTile(e){
     let data = this.state.data
-    const row = e.target.parentNode.dataset.row
+    const row = e.target.parentNode.parentNode.dataset.row
     if (data[row].length < 9){
       data[row].push(0)
       this.setState({data: data})
@@ -119,7 +119,7 @@ class App extends Component {
   }
   subtractTile(e){
     let data = this.state.data
-    const row = e.target.parentNode.dataset.row
+    const row = e.target.parentNode.parentNode.dataset.row
     if (data[row].length > 1){
       data[row].pop()
       this.setState({data: data})
