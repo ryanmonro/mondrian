@@ -7,12 +7,7 @@ import Button from '@material-ui/core/Button'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import StopIcon from '@material-ui/icons/Stop'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-// import AppBar from '@material-ui/core/AppBar'
-// import TextField from '@material-ui/core/TextField'
-// import Switch from '@material-ui/core/Switch'
-// import FormControlLabel from '@material-ui/core/FormControlLabel'
-// import FormControl from '@material-ui/core/FormControl'
-// import MenuItem from '@material-ui/core/MenuItem'
+import AppBar from '@material-ui/core/AppBar'
 
 function randomBoard(){
   let board = []
@@ -165,20 +160,20 @@ class App extends Component {
     this.setState({position: 0, playPosition: playPosition, playing: false, randomiseNext: false})
   }
   buttonStyle(){
-    return {margin: '5px'}
+    return {margin: '5px', float: 'left'}
   }
   render() {
     let data = this.state.data
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
-          
-          <Toolbar style={{display: 'inline-block'}}>
+          <AppBar position="static" color='default'>
+          <Toolbar>
           <Button variant="contained" onClick={this.start} disabled={this.state.playing} style={this.buttonStyle()}><PlayArrowIcon /></Button>
           <Button variant="contained" onClick={this.stop} disabled={!this.state.playing} style={this.buttonStyle()}><StopIcon /></Button>
           <Button variant="contained" onClick={this.randomise} disabled={this.state.randomiseNext} style={this.buttonStyle()}>Randomise</Button>
           </Toolbar>
-          
+          </AppBar>
         </MuiThemeProvider>
         <Board data={data} position={this.state.position} functions={this.state.functions}>
         </Board>
