@@ -2,14 +2,17 @@ import React, { Component } from 'react'
 import './App.css'
 import Board from './Board'
 import Tone from 'tone'
-import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import StopIcon from '@material-ui/icons/Stop'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import Switch from '@material-ui/core/Switch'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+// import AppBar from '@material-ui/core/AppBar'
+// import TextField from '@material-ui/core/TextField'
+// import Switch from '@material-ui/core/Switch'
+// import FormControlLabel from '@material-ui/core/FormControlLabel'
+// import FormControl from '@material-ui/core/FormControl'
+// import MenuItem from '@material-ui/core/MenuItem'
 
 function randomBoard(){
   let board = []
@@ -48,12 +51,14 @@ class App extends Component {
     }
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
+    this.randomise = this.randomise.bind(this)
     this.state = {
       data: randomBoard(),
       position: 0,
       playing: false,
       synths: synths,
-      fullAuto: false,
+      randomiseNext: false,
+      randomiseInterval: 4,
       functions: {
         'change': this.change.bind(this),
         'add': this.addTile.bind(this),
@@ -84,15 +89,23 @@ class App extends Component {
       }
       if (position >= 100) {
         position = 1
-        if (this.state.fullAuto){
+        if (this.state.randomiseNext === true){
           const newData = randomBoard()
-          this.setState({data: newData})
+          this.setState({data: newData, randomiseNext: false})
         }
       } else {
         position += (100 / (24 * 4))
       }
       this.setState({position: position, playPosition: playPosition})
     }, "1i")
+  }
+  randomise(){
+    if (this.state.playing === true) {
+      this.setState({randomiseNext: true})
+    } else {
+      const newData = randomBoard()
+      this.setState({data: newData})
+    }
   }
   change(e){
     const {row, col} = e.target.dataset
@@ -132,7 +145,7 @@ class App extends Component {
     }
   }
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+    this.setState({ [name]: event.target.value });
   }
   start(){
     Tone.Transport.start()
@@ -149,30 +162,23 @@ class App extends Component {
     for(let i = 0; i < 6; i++){
       playPosition[i] = -1
     }
-    this.setState({position: 0, playPosition: playPosition, playing: false})
+    this.setState({position: 0, playPosition: playPosition, playing: false, randomiseNext: false})
+  }
+  buttonStyle(){
+    return {margin: '5px'}
   }
   render() {
     let data = this.state.data
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
-          <AppBar position="static">
-          <Toolbar>
-          <Button variant="contained" onClick={this.start} disabled={this.state.playing}><PlayArrowIcon /></Button>
-          <Button variant="contained" onClick={this.stop} disabled={!this.state.playing}><StopIcon /></Button>
-          <FormControlLabel
-          style={{paddingLeft: "20px"}}
-          control={
-            <Switch
-              checked={this.state.fullAuto}
-              onChange={this.handleChange('fullAuto')}
-              value="fullAuto"
-            />
-          }
-          label="Full Auto"
-          />
+          
+          <Toolbar style={{display: 'inline-block'}}>
+          <Button variant="contained" onClick={this.start} disabled={this.state.playing} style={this.buttonStyle()}><PlayArrowIcon /></Button>
+          <Button variant="contained" onClick={this.stop} disabled={!this.state.playing} style={this.buttonStyle()}><StopIcon /></Button>
+          <Button variant="contained" onClick={this.randomise} disabled={this.state.randomiseNext} style={this.buttonStyle()}>Randomise</Button>
           </Toolbar>
-          </AppBar>
+          
         </MuiThemeProvider>
         <Board data={data} position={this.state.position} functions={this.state.functions}>
         </Board>
