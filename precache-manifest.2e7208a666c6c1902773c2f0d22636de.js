@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/mondrian/static/js/runtime~main.5e2da56a.js"
   },
   {
-    "revision": "fa627ccf83f75dd384bd",
-    "url": "/mondrian/static/js/main.6dcc9004.chunk.js"
+    "revision": "d73ef1e81850d767b22e",
+    "url": "/mondrian/static/js/main.976739ef.chunk.js"
   },
   {
     "revision": "21f67d64cd14d15cd512",
     "url": "/mondrian/static/js/2.f711fa7c.chunk.js"
   },
   {
-    "revision": "fa627ccf83f75dd384bd",
-    "url": "/mondrian/static/css/main.96cfd7a3.chunk.css"
+    "revision": "d73ef1e81850d767b22e",
+    "url": "/mondrian/static/css/main.796a76d0.chunk.css"
   },
   {
-    "revision": "2661015b52780883dabff7b218ef7f6a",
+    "revision": "fabd3929bf19cad55a83d3d0e69ac221",
     "url": "/mondrian/index.html"
   }
 ];
