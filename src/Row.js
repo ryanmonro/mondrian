@@ -9,8 +9,13 @@ export default class Row extends Component {
     if (position === 0) return false
     return percent >= col / cols && percent <= (col + 1) / cols
   }
+  // height(){
+  //   const boardHeight = 800 // (this.props.width < 600 ? 400 : 800)
+  //   // console.log(boardHeight)
+  //   return ( boardHeight / 2).toString() + "px"
+  // }
   render(){
-    let {data, row, functions} = this.props
+    let {data, row, functions, height} = this.props
     return (
       <div className="RowOuter" data-row={row} >
         <div className="rowButtonOuter left">
@@ -21,7 +26,7 @@ export default class Row extends Component {
           </div>
         </div>
         <div className="Row" style={{ 
-          height: this.props.height,
+          height: height,
           borderTop: row === 0 ? "5px solid #212121" : "",
           borderBottom: row === data.length ? "5px solid #212121" : ""
         }}>

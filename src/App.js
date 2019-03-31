@@ -19,7 +19,7 @@ const settings = {
 
 function randomBoard(){
   let board = []
-  const height = settings.minHeight + Math.floor(Math.random() * (settings.maxHeight - settings.minHeight))
+  const height = settings.minHeight + Math.floor(Math.random() * (settings.maxHeight - settings.minHeight + 1))
   for(var i = 0; i < height; i++){
     var row = []
     let width = Math.ceil(Math.random() * settings.maxWidth)
@@ -55,7 +55,9 @@ class App extends Component {
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
     this.randomise = this.randomise.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     this.state = {
+      windowWidth: 0,
       data: randomBoard(),
       position: 0,
       playing: false,
@@ -73,6 +75,8 @@ class App extends Component {
 
   }
   componentDidMount(){
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
     Tone.Transport.PPQ = 24
     Tone.Transport.scheduleRepeat((time)=>{
       let {position, data, playPosition, synths} = this.state
@@ -101,6 +105,13 @@ class App extends Component {
       }
       this.setState({position: position, playPosition: playPosition})
     }, "1i")
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ windowWidth: window.innerWidth });
   }
   randomise(){
     if (this.state.playing === true) {
@@ -183,7 +194,7 @@ class App extends Component {
           </Toolbar>
           </AppBar>
         </MuiThemeProvider>
-        <Board data={data} position={this.state.position} functions={this.state.functions}>
+        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={this.state.windowWidth > 600 ? 600 : 400}>
         </Board>
       </div>
     );

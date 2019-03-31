@@ -9,5 +9,8 @@
   border: 5px solid #212121;
   &.playing {
     padding: 3px;
+    @media (max-width: 600px) {
+      padding: 1px;
+    }
   }
 }

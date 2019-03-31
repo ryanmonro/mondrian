@@ -4,7 +4,7 @@ import './Board.css';
 
 export default class Board extends Component {
   render(){
-    let {data, functions, position} = this.props
+    let {data, functions, position, height} = this.props
     return (
       <div className="boardOuter">
       <div className="longButtonOuter">
@@ -15,7 +15,7 @@ export default class Board extends Component {
           <Row data={v} key={k} row={k} 
             functions={functions} 
             position={position} 
-            height={ (800 / data.length).toString() + "px" }>
+            height={ (height / data.length).toString() + "px" }>
           </Row> ) }
       </div>
       <div className="longButtonOuter">

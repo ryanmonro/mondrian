@@ -44,7 +44,6 @@
   &.long {
     width: initial;
     margin: 0 40px 0 40px;
-
     display: block;
     height: 40px;
     line-height: 40px;
@@ -52,5 +51,15 @@
   &:hover {
     opacity: 1;
     cursor: pointer;
+  }
+  @media (max-width: 600px) {
+    opacity: 1;
+    font-size: 15px;
+    width: 20px;
+    &.long {
+      height: 20px;
+      line-height: 20px;
+      margin: 0 20px 0 20px;
+    }
   }
 }
