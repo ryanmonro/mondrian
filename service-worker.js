@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/mondrian/precache-manifest.82c3d8027e5af3b75cc6b3f98c1922a3.js"
+  "/mondrian/precache-manifest.4399e8e88254d963cbd8b418bcd019a8.js"
 );
 
 workbox.clientsClaim();
