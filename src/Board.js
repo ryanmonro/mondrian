@@ -8,7 +8,7 @@ export default class Board extends Component {
     return (
       <div className="boardOuter">
       <div className="longButtonOuter">
-        <div className="rowButton long subtract" onClick={desktop && functions.subtractRow}>–</div>
+        <div className="rowButton long subtract" onClick={desktop ? functions.subtractRow : undefined}>–</div>
         </div>
       <div className="Board">
         { data.map((v, k) => 
@@ -21,7 +21,7 @@ export default class Board extends Component {
           </Row> ) }
       </div>
       <div className="longButtonOuter">
-        <div className="rowButton long add" onClick={desktop && functions.addRow}>+</div>
+        <div className="rowButton long add" onClick={desktop ? functions.addRow : undefined}>+</div>
       </div>
       </div>
     )

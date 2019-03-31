@@ -16,7 +16,7 @@ export default class Row extends Component {
       <div className="RowOuter" data-row={row} >
         <div className="rowButtonOuter left">
           <div className="rowButton subtract" 
-            onClick={ desktop && functions.subtract }
+            onClick={ desktop ? functions.subtract : undefined }
             style={{ lineHeight: this.props.height }} >
             –
           </div>
@@ -39,7 +39,7 @@ export default class Row extends Component {
         </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
-            onClick={ desktop && functions.add }
+            onClick={ desktop ? functions.add : undefined }
             style={{ lineHeight: this.props.height }} >
             +
           </div>

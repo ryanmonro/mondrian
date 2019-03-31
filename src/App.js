@@ -59,6 +59,8 @@ class App extends Component {
     this.state = {
       windowWidth: 0,
       windowHeight: 0,
+      // board: {},
+      // player: {},
       data: randomBoard(),
       position: 0,
       playing: false,
@@ -79,33 +81,6 @@ class App extends Component {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
     Tone.Transport.PPQ = 24
-    Tone.Transport.scheduleRepeat((time)=>{
-      let {position, data, playPosition, synths} = this.state
-      for(const [i, row] of data.entries()){
-        const notes = settings.notes
-        let newPos = Math.floor((position / 100) * row.length)
-        if (playPosition[i] !== newPos) {
-          playPosition[i] = newPos
-          if (playPosition[i] === row.length) {
-            playPosition[i] = 0
-          }
-          const note = notes[row[playPosition[i]]]
-          if(note !== 0){
-            synths[i].triggerAttackRelease(note + (i + 2).toString(), "16n", time)
-          }
-        }
-      }
-      if (position >= 100) {
-        position = 1
-        if (this.state.randomiseNext === true){
-          const newData = randomBoard()
-          this.setState({data: newData, randomiseNext: false})
-        }
-      } else {
-        position += (100 / (24 * 4))
-      }
-      this.setState({position: position, playPosition: playPosition})
-    }, "1i")
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
@@ -163,6 +138,33 @@ class App extends Component {
     this.setState({ [name]: event.target.value });
   }
   start(){
+    Tone.Transport.scheduleRepeat((time)=>{
+      let {position, data, playPosition, synths} = this.state
+      for(const [i, row] of data.entries()){
+        const notes = settings.notes
+        let newPos = Math.floor((position / 100) * row.length)
+        if (playPosition[i] !== newPos) {
+          playPosition[i] = newPos
+          if (playPosition[i] === row.length) {
+            playPosition[i] = 0
+          }
+          const note = notes[row[playPosition[i]]]
+          if(note !== 0){
+            synths[i].triggerAttackRelease(note + (i + 2).toString(), "16n", time)
+          }
+        }
+      }
+      if (position >= 100) {
+        position = 1
+        if (this.state.randomiseNext === true){
+          const newData = randomBoard()
+          this.setState({data: newData, randomiseNext: false})
+        }
+      } else {
+        position += (100 / (24 * 4))
+      }
+      this.setState({position: position, playPosition: playPosition})
+    }, "1i")
     Tone.Transport.start()
     Tone.start()
     let playPosition = []
@@ -173,6 +175,7 @@ class App extends Component {
   }
   stop(){
     Tone.Transport.stop()
+    Tone.Transport.cancel()
     let playPosition = []
     for(let i = 0; i < 6; i++){
       playPosition[i] = -1
@@ -183,7 +186,7 @@ class App extends Component {
     return {margin: '5px', float: 'left'}
   }
   render() {
-    let data = this.state.data
+    let data = this.state.data, desktop = this.state.windowWidth > 600
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
@@ -195,7 +198,7 @@ class App extends Component {
           </Toolbar>
           </AppBar>
         </MuiThemeProvider>
-        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={this.state.windowHeight - 160} desktop = {this.state.windowWidth > 600}>
+        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={desktop ? this.state.windowHeight - 160 : this.state.windowHeight - 110} desktop={desktop}>
         </Board>
       </div>
     );
