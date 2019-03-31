@@ -15,7 +15,8 @@ export default class Board extends Component {
           <Row data={v} key={k} row={k} 
             functions={functions} 
             position={position} 
-            height={ (height / data.length).toString() + "px" }>
+            height={ (height / data.length).toString() + "px" }
+            >
           </Row> ) }
       </div>
       <div className="longButtonOuter">

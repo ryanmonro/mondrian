@@ -58,6 +58,7 @@ class App extends Component {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     this.state = {
       windowWidth: 0,
+      windowHeight: 0,
       data: randomBoard(),
       position: 0,
       playing: false,
@@ -111,7 +112,7 @@ class App extends Component {
   }
 
   updateWindowDimensions() {
-    this.setState({ windowWidth: window.innerWidth });
+    this.setState({ windowWidth: window.innerWidth, windowHeight:window.innerHeight });
   }
   randomise(){
     if (this.state.playing === true) {
@@ -194,7 +195,7 @@ class App extends Component {
           </Toolbar>
           </AppBar>
         </MuiThemeProvider>
-        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={this.state.windowWidth > 600 ? 600 : 400}>
+        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={this.state.windowHeight - 160}>
         </Board>
       </div>
     );

@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import Tile from './Tile';
-import './Row.scss';
+import React, { Component } from 'react'
+import {Swipeable} from 'react-touch'
+import Tile from './Tile'
+import './Row.scss'
 
 export default class Row extends Component {
   tileIsPlaying(col, cols){
@@ -9,11 +10,6 @@ export default class Row extends Component {
     if (position === 0) return false
     return percent >= col / cols && percent <= (col + 1) / cols
   }
-  // height(){
-  //   const boardHeight = 800 // (this.props.width < 600 ? 400 : 800)
-  //   // console.log(boardHeight)
-  //   return ( boardHeight / 2).toString() + "px"
-  // }
   render(){
     let {data, row, functions, height} = this.props
     return (
@@ -25,6 +21,7 @@ export default class Row extends Component {
             –
           </div>
         </div>
+        <Swipeable onSwipeLeft={functions.subtract} onSwipeRight={functions.add}>
         <div className="Row" style={{ 
           height: height,
           borderTop: row === 0 ? "5px solid #212121" : "",
@@ -39,6 +36,7 @@ export default class Row extends Component {
             </Tile> ) 
           }
         </div>
+        </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
             onClick={ functions.add }
