@@ -9,14 +9,22 @@ import StopIcon from '@material-ui/icons/Stop'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 
+const settings = {
+  minHeight: 2,
+  maxHeight: 4,
+  maxWidth: 5,
+  notes: [0, 'C', 'D', 'E', 'G', 'A']
+
+}
+
 function randomBoard(){
   let board = []
-  const height = Math.ceil(Math.random() * 6)
+  const height = settings.minHeight + Math.floor(Math.random() * (settings.maxHeight - settings.minHeight))
   for(var i = 0; i < height; i++){
     var row = []
-    let width = Math.ceil(Math.random() * 8)
+    let width = Math.ceil(Math.random() * settings.maxWidth)
     for(var t = 0; t < width; t++){
-      row.push(Math.floor(Math.random() * 6))
+      row.push(Math.floor(Math.random() * settings.notes.length))
     }
     board.push(row)
   }
@@ -69,7 +77,7 @@ class App extends Component {
     Tone.Transport.scheduleRepeat((time)=>{
       let {position, data, playPosition, synths} = this.state
       for(const [i, row] of data.entries()){
-        const notes = [0, 'C', 'D', 'E', 'G', 'A']
+        const notes = settings.notes
         let newPos = Math.floor((position / 100) * row.length)
         if (playPosition[i] !== newPos) {
           playPosition[i] = newPos
