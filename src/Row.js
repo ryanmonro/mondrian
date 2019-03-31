@@ -11,21 +11,21 @@ export default class Row extends Component {
     return percent >= col / cols && percent <= (col + 1) / cols
   }
   render(){
-    let {data, row, functions, height, desktop} = this.props
+    let {data, row, functions, height, desktop, board} = this.props
     return (
-      <div className="RowOuter" data-row={row} >
+      <div className="RowOuter">
         <div className="rowButtonOuter left">
           <div className="rowButton subtract" 
-            onClick={ desktop ? functions.subtract : undefined }
+            onClick={ desktop ? ()=>functions.subtract(row) : undefined }
             style={{ lineHeight: this.props.height }} >
             –
           </div>
         </div>
-        <Swipeable onSwipeLeft={functions.subtract} onSwipeRight={functions.add}>
+        <Swipeable onSwipeRight={()=>functions.subtract(row)} onSwipeLeft={()=>functions.add(row)} >
         <div className="Row" style={{ 
           height: height,
           borderTop: row === 0 ? "5px solid #212121" : "",
-          borderBottom: row === data.length ? "5px solid #212121" : ""
+          borderBottom: row === (board.length - 1) ? "5px solid #212121" : ""
         }}>
           { data.map((v, k) => 
             <Tile value={v} key={k} row={row} col={k} 
@@ -39,7 +39,7 @@ export default class Row extends Component {
         </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
-            onClick={ desktop ? functions.add : undefined }
+            onClick={ desktop ? ()=>functions.add(row) : undefined }
             style={{ lineHeight: this.props.height }} >
             +
           </div>

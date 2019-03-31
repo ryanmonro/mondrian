@@ -59,9 +59,11 @@ class App extends Component {
     this.state = {
       windowWidth: 0,
       windowHeight: 0,
-      // board: {},
-      // player: {},
+      // board: {
+
+      // },
       data: randomBoard(),
+      // player: {},
       position: 0,
       playing: false,
       synths: synths,
@@ -97,24 +99,22 @@ class App extends Component {
       this.setState({data: newData})
     }
   }
-  change(e){
-    const {row, col} = e.target.dataset
+  change(row, col){
+    // const {row, col} = e.target.dataset
     let data = this.state.data
     let oldValue = data[row][col]
     data[row][col] = (oldValue + 1) % 6
     this.setState({data: data})
   }
-  addTile(e){
+  addTile(row){
     let data = this.state.data
-    const row = e.target.parentNode.parentNode.dataset.row
     if (data[row].length < 9){
       data[row].push(0)
       this.setState({data: data})
     }
   }
-  subtractTile(e){
+  subtractTile(row){
     let data = this.state.data
-    const row = e.target.parentNode.parentNode.dataset.row
     if (data[row].length > 1){
       data[row].pop()
       this.setState({data: data})
@@ -165,7 +165,7 @@ class App extends Component {
       }
       this.setState({position: position, playPosition: playPosition})
     }, "1i")
-    Tone.Transport.start()
+    Tone.Transport.start("+0.1")
     Tone.start()
     let playPosition = []
     for(let i = 0; i < 6; i++){
@@ -186,7 +186,7 @@ class App extends Component {
     return {margin: '5px', float: 'left'}
   }
   render() {
-    let data = this.state.data, desktop = this.state.windowWidth > 600
+    let {data} = this.state, desktop = this.state.windowWidth > 600
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
