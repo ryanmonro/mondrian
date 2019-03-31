@@ -195,7 +195,7 @@ class App extends Component {
           </Toolbar>
           </AppBar>
         </MuiThemeProvider>
-        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={this.state.windowHeight - 160}>
+        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={this.state.windowHeight - 160} desktop = {this.state.windowWidth > 600}>
         </Board>
       </div>
     );

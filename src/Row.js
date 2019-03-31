@@ -11,12 +11,12 @@ export default class Row extends Component {
     return percent >= col / cols && percent <= (col + 1) / cols
   }
   render(){
-    let {data, row, functions, height} = this.props
+    let {data, row, functions, height, desktop} = this.props
     return (
       <div className="RowOuter" data-row={row} >
         <div className="rowButtonOuter left">
           <div className="rowButton subtract" 
-            onClick={ functions.subtract }
+            onClick={ desktop && functions.subtract }
             style={{ lineHeight: this.props.height }} >
             –
           </div>
@@ -39,7 +39,7 @@ export default class Row extends Component {
         </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
-            onClick={ functions.add }
+            onClick={ desktop && functions.add }
             style={{ lineHeight: this.props.height }} >
             +
           </div>

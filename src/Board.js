@@ -4,11 +4,11 @@ import './Board.css';
 
 export default class Board extends Component {
   render(){
-    let {data, functions, position, height} = this.props
+    let {data, functions, position, height, desktop} = this.props
     return (
       <div className="boardOuter">
       <div className="longButtonOuter">
-        <div className="rowButton long subtract" onClick={functions.subtractRow}>–</div>
+        <div className="rowButton long subtract" onClick={desktop && functions.subtractRow}>–</div>
         </div>
       <div className="Board">
         { data.map((v, k) => 
@@ -16,11 +16,12 @@ export default class Board extends Component {
             functions={functions} 
             position={position} 
             height={ (height / data.length).toString() + "px" }
+            desktop={desktop}
             >
           </Row> ) }
       </div>
       <div className="longButtonOuter">
-        <div className="rowButton long add" onClick={functions.addRow}>+</div>
+        <div className="rowButton long add" onClick={desktop && functions.addRow}>+</div>
       </div>
       </div>
     )
