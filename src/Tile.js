@@ -23,7 +23,7 @@ export default class Tile extends Component {
       >
         <div 
           className="TileInner" 
-          onClick={()=>this.props.functions.change(row, col)}
+          onClick={()=>functions.change(row, col)}
           style={{
             background: colour(this.props.value)
           }}>

@@ -13,18 +13,26 @@ const settings = {
   minHeight: 2,
   maxHeight: 4,
   maxWidth: 5,
-  notes: [0, 'C', 'D', 'E', 'G', 'A']
-
+  notes: [0, 'C', 'D', 'E', 'G', 'A'],
+  chanceOfRest: 0.5,
+  subdivs: [3,4,5,6,8]
 }
 
 function randomBoard(){
   let board = []
-  const height = settings.minHeight + Math.floor(Math.random() * (settings.maxHeight - settings.minHeight + 1))
+  const height = 4
+  // settings.minHeight + Math.floor(Math.random() * (settings.maxHeight - settings.minHeight + 1))
   for(var i = 0; i < height; i++){
     var row = []
-    let width = Math.ceil(Math.random() * settings.maxWidth)
+    let width = settings.subdivs[Math.floor(Math.random() * 5)]
+    //Math.pow(2, Math.floor(Math.random() * 4))
+      // Math.ceil(Math.random() * settings.maxWidth))
     for(var t = 0; t < width; t++){
-      row.push(Math.floor(Math.random() * settings.notes.length))
+      let note = 0
+      if (Math.random() > settings.chanceOfRest){
+        note = Math.floor(Math.random() * settings.notes.length)
+      }
+      row.push(note)
     }
     board.push(row)
   }
@@ -83,6 +91,7 @@ class App extends Component {
     this.updateWindowDimensions();
     window.addEventListener('resize', this.updateWindowDimensions);
     Tone.Transport.PPQ = 24
+    Tone.Transport.bpm.value = 60
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.updateWindowDimensions);
