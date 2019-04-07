@@ -30,7 +30,7 @@ function randomBoard(){
     for(var t = 0; t < width; t++){
       let note = 0
       if (Math.random() > settings.chanceOfRest){
-        note = Math.floor(Math.random() * settings.notes.length)
+        note = Math.ceil(Math.random() * (settings.notes.length - 1))
       }
       row.push(note)
     }
