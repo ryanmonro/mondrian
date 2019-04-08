@@ -10,22 +10,29 @@ const colours = {
   "black": "#212121",
 }
 
-const colour = (index) => colours[Object.keys(colours)[index]]
-
 export default class Tile extends Component {
+  colour(){
+    return colours[Object.keys(colours)[this.props.note]]
+  }
+  isPlaying(){
+    const {player, col, row} = this.props
+    const cols = row.length
+    const percent = player.position / 100
+    if (player.position === 0) return false
+    return percent >= col / cols && percent <= (col + 1) / cols
+  }
   render(){
-    let {board, row, col} = this.props
+    let {board, change, row} = this.props
+    let width = (100 / row.length).toString() + "%"
     return (
-      <div className={this.props.playing ? "Tile playing" : "Tile"}
-        style={{
-          width: this.props.width
-        }}
+      <div className={this.isPlaying() ? "Tile playing" : "Tile"}
+        style={{ width: width }}
       >
         <div 
           className="TileInner" 
-          onClick={()=>board.functions.change(row, col)}
+          onClick={change}
           style={{
-            background: colour(this.props.note)
+            background: this.colour()
           }}>
         </div>
       </div>

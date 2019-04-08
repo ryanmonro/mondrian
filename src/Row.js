@@ -4,20 +4,15 @@ import Tile from './Tile'
 import './Row.scss'
 
 export default class Row extends Component {
-  tileIsPlaying(col, cols){
-    const {player} = this.props
-    const percent = player.position / 100
-    if (player.position === 0) return false
-    return percent >= col / cols && percent <= (col + 1) / cols
-  }
   render(){
-    let {board, row, index, height, desktop} = this.props
+    let {board, row, ui, index, player} = this.props
+    const height = (ui.height / board.data.length).toString() + "px"
     return (
       <div className="RowOuter">
         <div className="rowButtonOuter left">
           <div className="rowButton subtract" 
-            onClick={ desktop ? ()=>board.functions.subtractTile(index) : undefined }
-            style={{ lineHeight: this.props.height }} >
+            onClick={ ui.desktop ? ()=>board.functions.subtractTile(index) : undefined }
+            style={{ lineHeight: height }} >
             –
           </div>
         </div>
@@ -28,18 +23,17 @@ export default class Row extends Component {
           borderBottom: index === (board.data.length - 1) ? "5px solid #212121" : ""
         }}>
           { row.map((v, k) => 
-            <Tile note={v} key={k} row={index} col={k} board={board}
-              width={ (100 / row.length).toString() + "%" }
-              playing={ this.tileIsPlaying(k, row.length) }
-            >
-            </Tile> ) 
+            <Tile note={v} key={k} row={row} col={k} player={player}
+              change={ ()=>board.functions.changeTile(index, k) }
+            />
+            ) 
           }
         </div>
         </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
-            onClick={ desktop ? ()=>board.functions.addTile(index) : undefined }
-            style={{ lineHeight: this.props.height }} >
+            onClick={ ui.desktop ? ()=>board.functions.addTile(index) : undefined }
+            style={{ lineHeight: height }} >
             +
           </div>
         </div>

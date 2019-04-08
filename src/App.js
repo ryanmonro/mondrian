@@ -70,7 +70,7 @@ class App extends Component {
       board: {
         data: randomBoard(),
         functions: {
-          'change': (row, col) => {
+          'changeTile': (row, col) => {
             let {board} = this.state
             board.data[row][col] = (board.data[row][col] + 1) % 6
             this.setState({board: board})
@@ -197,7 +197,13 @@ class App extends Component {
     return {margin: '5px', float: 'left'}
   }
   render() {
-    let {board, player} = this.state, desktop = this.state.windowWidth > 600
+    let {board, player} = this.state
+    let desktop = this.state.windowWidth > 600
+    let ui = {
+      desktop: desktop,
+      width: this.state.windowWidth,
+      height: desktop ? this.state.windowHeight - 160 : this.state.windowHeight - 110
+    }
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
@@ -209,8 +215,7 @@ class App extends Component {
           </Toolbar>
           </AppBar>
         </MuiThemeProvider>
-        <Board board={board} player={player} width={this.state.windowWidth} height={desktop ? this.state.windowHeight - 160 : this.state.windowHeight - 110} desktop={desktop}>
-        </Board>
+        <Board board={board} player={player} ui={ui} />
       </div>
     );
   }
