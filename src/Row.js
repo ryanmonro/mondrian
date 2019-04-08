@@ -16,16 +16,16 @@ export default class Row extends Component {
       <div className="RowOuter">
         <div className="rowButtonOuter left">
           <div className="rowButton subtract" 
-            onClick={ desktop ? ()=>board.functions.subtractTile(row) : undefined }
+            onClick={ desktop ? ()=>board.functions.subtractTile(index) : undefined }
             style={{ lineHeight: this.props.height }} >
             –
           </div>
         </div>
-        <Swipeable onSwipeRight={()=>board.functions.subtractTile(row)} onSwipeLeft={()=>board.functions.addTile(row)} >
+        <Swipeable onSwipeRight={()=>board.functions.subtractTile(index)} onSwipeLeft={()=>board.functions.addTile(index)} >
         <div className="Row" style={{ 
           height: height,
-          borderTop: row === 0 ? "5px solid #212121" : "",
-          borderBottom: row === (board.length - 1) ? "5px solid #212121" : ""
+          borderTop: index === 0 ? "5px solid #212121" : "",
+          borderBottom: index === (board.data.length - 1) ? "5px solid #212121" : ""
         }}>
           { row.map((v, k) => 
             <Tile note={v} key={k} row={index} col={k} board={board}
@@ -38,7 +38,7 @@ export default class Row extends Component {
         </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
-            onClick={ desktop ? ()=>board.functions.addTile(row) : undefined }
+            onClick={ desktop ? ()=>board.functions.addTile(index) : undefined }
             style={{ lineHeight: this.props.height }} >
             +
           </div>
