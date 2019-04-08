@@ -5,27 +5,26 @@ import './Board.css';
 
 export default class Board extends Component {
   render(){
-    let {data, functions, position, height, desktop} = this.props
+    let {board, player, height, desktop} = this.props
     return (
       <div className="boardOuter">
-      <div className="longButtonOuter">
-        <div className="rowButton long subtract" onClick={desktop ? functions.subtractRow : undefined}>–</div>
+        <div className="longButtonOuter">
+          <div className="rowButton long subtract" onClick={desktop ? board.functions.subtractRow : undefined}>–</div>
+          </div>
+          <Swipeable onSwipeUp={board.functions.addRow} onSwipeDown={board.functions.subtractRow} >
+        <div className="Board">
+          { board.data.map((v, k) => 
+            <Row row={v} key={k} index={k} board={board}
+              player={player} 
+              height={ (height / board.data.length).toString() + "px" }
+              desktop={desktop}
+              >
+            </Row> ) }
         </div>
-        <Swipeable onSwipeUp={functions.addRow} onSwipeDown={functions.subtractRow} >
-      <div className="Board">
-        { data.map((v, k) => 
-          <Row data={v} key={k} row={k} board={data}
-            functions={functions} 
-            position={position} 
-            height={ (height / data.length).toString() + "px" }
-            desktop={desktop}
-            >
-          </Row> ) }
-      </div>
-        </Swipeable>
-      <div className="longButtonOuter">
-        <div className="rowButton long add" onClick={desktop ? functions.addRow : undefined}>+</div>
-      </div>
+          </Swipeable>
+        <div className="longButtonOuter">
+          <div className="rowButton long add" onClick={desktop ? board.functions.addRow : undefined}>+</div>
+        </div>
       </div>
     )
   }

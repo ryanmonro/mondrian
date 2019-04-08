@@ -67,50 +67,52 @@ class App extends Component {
     this.state = {
       windowWidth: 0,
       windowHeight: 0,
-      data: randomBoard(),
-      player: {
-        
+      board: {
+        data: randomBoard(),
+        functions: {
+          'change': (row, col) => {
+            let {board} = this.state
+            board.data[row][col] = (board.data[row][col] + 1) % 6
+            this.setState({board: board})
+          },
+          'addTile': (row) => {
+            let {board} = this.state
+            if (board.data[row].length < 9){
+              board.data[row].push(0)
+              this.setState({board: board})
+            }
+          },
+          'subtractTile': (row) => {
+            let {board} = this.state
+            if (board.data[row].length > 1){
+              board.data[row].pop()
+              this.setState({board: board})
+            }
+          },
+          'addRow': () => {
+            let {board} = this.state
+            if (board.data.length < 6){
+              board.data.push([0,0,0,0])
+              this.setState({board: board})
+            }
+          },
+          'subtractRow': () => {
+            let {board} = this.state
+            if (board.data.length > 1){
+              board.data.pop()
+              this.setState({board: board})
+            }
+          }
+        },
       },
-      position: 0,
+      player: {
+        position: 0,
+
+      },
       playing: false,
       synths: synths,
       randomiseNext: false,
-      randomiseInterval: 4,
-      functions: {
-        'change': (row, col) => {
-          let data = this.state.data
-          data[row][col] = (data[row][col] + 1) % 6
-          this.setState({data: data})
-        },
-        'addTile': (row) => {
-          let data = this.state.data
-          if (data[row].length < 9){
-            data[row].push(0)
-            this.setState({data: data})
-          }
-        },
-        'subtractTile': (row) => {
-          let data = this.state.data
-          if (data[row].length > 1){
-            data[row].pop()
-            this.setState({data: data})
-          }
-        },
-        'addRow': () => {
-          let data = this.state.data
-          if (data.length < 6){
-            data.push([0,0,0,0])
-            this.setState({data: data})
-          }
-        },
-        'subtractRow': () => {
-          let data = this.state.data
-          if (data.length > 1){
-            data.pop()
-            this.setState({data: data})
-          }
-        }
-      },
+      randomiseInterval: 4
     }
 
   }
@@ -132,7 +134,9 @@ class App extends Component {
       this.setState({randomiseNext: true})
     } else {
       const newData = randomBoard()
-      this.setState({data: newData})
+      let board = this.state.board
+      board.data = newData
+      this.setState({board: board})
     }
   }
   handleChange = name => event => {
@@ -140,10 +144,10 @@ class App extends Component {
   }
   start(){
     Tone.Transport.scheduleRepeat((time)=>{
-      let {position, data, playPosition, synths} = this.state
-      for(const [i, row] of data.entries()){
+      let {player, board, playPosition, synths} = this.state
+      for(const [i, row] of board.data.entries()){
         const notes = settings.notes
-        let newPos = Math.floor((position / 100) * row.length)
+        let newPos = Math.floor((player.position / 100) * row.length)
         if (playPosition[i] !== newPos) {
           playPosition[i] = newPos
           if (playPosition[i] === row.length) {
@@ -155,16 +159,18 @@ class App extends Component {
           }
         }
       }
-      if (position >= 100) {
-        position = 1
+      if (player.position >= 100) {
+        player.position = 1
         if (this.state.randomiseNext === true){
           const newData = randomBoard()
-          this.setState({data: newData, randomiseNext: false})
+          let board = this.state.board
+          board.data = newData
+          this.setState({board: board, randomiseNext: false})
         }
       } else {
-        position += (100 / (24 * 4))
+        player.position += (100 / (24 * 4))
       }
-      this.setState({position: position, playPosition: playPosition})
+      this.setState({player: player, playPosition: playPosition})
     }, "1i")
     Tone.Transport.start("+0.1")
     Tone.start()
@@ -172,22 +178,26 @@ class App extends Component {
     for(let i = 0; i < 6; i++){
       playPosition[i] = -1
     }
-    this.setState({position: 1, playPosition: playPosition, playing: true})
+    let {player} = this.state
+    player.position = 1
+    this.setState({player: player, playPosition: playPosition, playing: true})
   }
   stop(){
     Tone.Transport.stop()
     Tone.Transport.cancel()
+    let {player} = this.state
     let playPosition = []
     for(let i = 0; i < 6; i++){
       playPosition[i] = -1
     }
-    this.setState({position: 0, playPosition: playPosition, playing: false, randomiseNext: false})
+    player.position = 0
+    this.setState({player: player, playPosition: playPosition, playing: false, randomiseNext: false})
   }
   buttonStyle(){
     return {margin: '5px', float: 'left'}
   }
   render() {
-    let {data} = this.state, desktop = this.state.windowWidth > 600
+    let {board, player} = this.state, desktop = this.state.windowWidth > 600
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
@@ -199,7 +209,7 @@ class App extends Component {
           </Toolbar>
           </AppBar>
         </MuiThemeProvider>
-        <Board data={data} position={this.state.position} functions={this.state.functions} width={this.state.windowWidth} height={desktop ? this.state.windowHeight - 160 : this.state.windowHeight - 110} desktop={desktop}>
+        <Board board={board} player={player} width={this.state.windowWidth} height={desktop ? this.state.windowHeight - 160 : this.state.windowHeight - 110} desktop={desktop}>
         </Board>
       </div>
     );

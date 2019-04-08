@@ -5,33 +5,32 @@ import './Row.scss'
 
 export default class Row extends Component {
   tileIsPlaying(col, cols){
-    const {position} = this.props
-    const percent = position / 100
-    if (position === 0) return false
+    const {player} = this.props
+    const percent = player.position / 100
+    if (player.position === 0) return false
     return percent >= col / cols && percent <= (col + 1) / cols
   }
   render(){
-    let {data, row, functions, height, desktop, board} = this.props
+    let {board, row, index, height, desktop} = this.props
     return (
       <div className="RowOuter">
         <div className="rowButtonOuter left">
           <div className="rowButton subtract" 
-            onClick={ desktop ? ()=>functions.subtractTile(row) : undefined }
+            onClick={ desktop ? ()=>board.functions.subtractTile(row) : undefined }
             style={{ lineHeight: this.props.height }} >
             –
           </div>
         </div>
-        <Swipeable onSwipeRight={()=>functions.subtractTile(row)} onSwipeLeft={()=>functions.addTile(row)} >
+        <Swipeable onSwipeRight={()=>board.functions.subtractTile(row)} onSwipeLeft={()=>board.functions.addTile(row)} >
         <div className="Row" style={{ 
           height: height,
           borderTop: row === 0 ? "5px solid #212121" : "",
           borderBottom: row === (board.length - 1) ? "5px solid #212121" : ""
         }}>
-          { data.map((v, k) => 
-            <Tile value={v} key={k} row={row} col={k} 
-              functions={functions} 
-              width={ (100 / data.length).toString() + "%" }
-              playing={ this.tileIsPlaying(k, data.length) }
+          { row.map((v, k) => 
+            <Tile note={v} key={k} row={index} col={k} board={board}
+              width={ (100 / row.length).toString() + "%" }
+              playing={ this.tileIsPlaying(k, row.length) }
             >
             </Tile> ) 
           }
@@ -39,7 +38,7 @@ export default class Row extends Component {
         </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
-            onClick={ desktop ? ()=>functions.addTile(row) : undefined }
+            onClick={ desktop ? ()=>board.functions.addTile(row) : undefined }
             style={{ lineHeight: this.props.height }} >
             +
           </div>

@@ -14,7 +14,7 @@ const colour = (index) => colours[Object.keys(colours)[index]]
 
 export default class Tile extends Component {
   render(){
-    let {functions, row, col} = this.props
+    let {board, row, col} = this.props
     return (
       <div className={this.props.playing ? "Tile playing" : "Tile"}
         style={{
@@ -23,9 +23,9 @@ export default class Tile extends Component {
       >
         <div 
           className="TileInner" 
-          onClick={()=>functions.change(row, col)}
+          onClick={()=>board.functions.change(row, col)}
           style={{
-            background: colour(this.props.value)
+            background: colour(this.props.note)
           }}>
         </div>
       </div>
