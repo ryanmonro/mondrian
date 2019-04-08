@@ -15,15 +15,14 @@ export default class Tile extends Component {
     return colours[Object.keys(colours)[this.props.note]]
   }
   isPlaying(){
-    const {player, col, row} = this.props
-    const cols = row.length
+    const {player, col, cols} = this.props
     const percent = player.position / 100
     if (player.position === 0) return false
     return percent >= col / cols && percent <= (col + 1) / cols
   }
   render(){
-    let {board, change, row} = this.props
-    let width = (100 / row.length).toString() + "%"
+    let {change, cols} = this.props
+    let width = (100 / cols).toString() + "%"
     return (
       <div className={this.isPlaying() ? "Tile playing" : "Tile"}
         style={{ width: width }}

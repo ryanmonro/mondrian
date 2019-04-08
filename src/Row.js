@@ -23,7 +23,7 @@ export default class Row extends Component {
           borderBottom: index === (board.data.length - 1) ? "5px solid #212121" : ""
         }}>
           { row.map((v, k) => 
-            <Tile note={v} key={k} row={row} col={k} player={player}
+            <Tile note={v} key={k} cols={row.length} col={k} player={player}
               change={ ()=>board.functions.changeTile(index, k) }
             />
             ) 
