@@ -67,22 +67,49 @@ class App extends Component {
     this.state = {
       windowWidth: 0,
       windowHeight: 0,
-      // board: {
-
-      // },
       data: randomBoard(),
-      // player: {},
+      player: {
+        
+      },
       position: 0,
       playing: false,
       synths: synths,
       randomiseNext: false,
       randomiseInterval: 4,
       functions: {
-        'change': this.change.bind(this),
-        'add': this.addTile.bind(this),
-        'subtract': this.subtractTile.bind(this),
-        'addRow': this.addRow.bind(this),
-        'subtractRow': this.subtractRow.bind(this)
+        'change': (row, col) => {
+          let data = this.state.data
+          data[row][col] = (data[row][col] + 1) % 6
+          this.setState({data: data})
+        },
+        'addTile': (row) => {
+          let data = this.state.data
+          if (data[row].length < 9){
+            data[row].push(0)
+            this.setState({data: data})
+          }
+        },
+        'subtractTile': (row) => {
+          let data = this.state.data
+          if (data[row].length > 1){
+            data[row].pop()
+            this.setState({data: data})
+          }
+        },
+        'addRow': () => {
+          let data = this.state.data
+          if (data.length < 6){
+            data.push([0,0,0,0])
+            this.setState({data: data})
+          }
+        },
+        'subtractRow': () => {
+          let data = this.state.data
+          if (data.length > 1){
+            data.pop()
+            this.setState({data: data})
+          }
+        }
       },
     }
 
@@ -106,41 +133,6 @@ class App extends Component {
     } else {
       const newData = randomBoard()
       this.setState({data: newData})
-    }
-  }
-  change(row, col){
-    // const {row, col} = e.target.dataset
-    let data = this.state.data
-    let oldValue = data[row][col]
-    data[row][col] = (oldValue + 1) % 6
-    this.setState({data: data})
-  }
-  addTile(row){
-    let data = this.state.data
-    if (data[row].length < 9){
-      data[row].push(0)
-      this.setState({data: data})
-    }
-  }
-  subtractTile(row){
-    let data = this.state.data
-    if (data[row].length > 1){
-      data[row].pop()
-      this.setState({data: data})
-    }
-  }
-  addRow(){
-    let data = this.state.data
-    if (data.length < 6){
-      data.push([0,0,0,0])
-      this.setState({data: data})
-    }
-  }
-  subtractRow(){
-    let data = this.state.data
-    if (data.length > 1){
-      data.pop()
-      this.setState({data: data})
     }
   }
   handleChange = name => event => {

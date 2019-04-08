@@ -16,12 +16,12 @@ export default class Row extends Component {
       <div className="RowOuter">
         <div className="rowButtonOuter left">
           <div className="rowButton subtract" 
-            onClick={ desktop ? ()=>functions.subtract(row) : undefined }
+            onClick={ desktop ? ()=>functions.subtractTile(row) : undefined }
             style={{ lineHeight: this.props.height }} >
             –
           </div>
         </div>
-        <Swipeable onSwipeRight={()=>functions.subtract(row)} onSwipeLeft={()=>functions.add(row)} >
+        <Swipeable onSwipeRight={()=>functions.subtractTile(row)} onSwipeLeft={()=>functions.addTile(row)} >
         <div className="Row" style={{ 
           height: height,
           borderTop: row === 0 ? "5px solid #212121" : "",
@@ -39,7 +39,7 @@ export default class Row extends Component {
         </Swipeable>
         <div className="rowButtonOuter right">
           <div className="rowButton add" 
-            onClick={ desktop ? ()=>functions.add(row) : undefined }
+            onClick={ desktop ? ()=>functions.addTile(row) : undefined }
             style={{ lineHeight: this.props.height }} >
             +
           </div>
