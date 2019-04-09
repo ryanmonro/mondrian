@@ -2,12 +2,7 @@ import React, { Component } from 'react'
 import './App.css'
 import Board from './Board'
 import Tone from 'tone'
-import Toolbar from '@material-ui/core/Toolbar'
-import Button from '@material-ui/core/Button'
-import PlayArrowIcon from '@material-ui/icons/PlayArrow'
-import StopIcon from '@material-ui/icons/Stop'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
+import Controls from './Controls'
 
 const settings = {
   minHeight: 2,
@@ -39,15 +34,6 @@ function randomBoard(){
   return board
 }
 
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark'
-  },
-  typography: {
-    useNextVariants: true,
-  }
-});
-
 class App extends Component {
   constructor(props){
     super(props)
@@ -60,9 +46,6 @@ class App extends Component {
         volume: -12
       }).toMaster())
     }
-    this.start = this.start.bind(this)
-    this.stop = this.stop.bind(this)
-    this.randomise = this.randomise.bind(this)
     this.state = {
       board: {
         data: randomBoard(),
@@ -101,11 +84,74 @@ class App extends Component {
         }
       },
       player: {
+        synths: synths,
         position: 0,
+        playPosition: [],
         tileIsPlaying: function(col, cols) {
           const percent = this.position / 100
           if (this.position === 0) return false
           return percent >= col / cols && percent <= (col + 1) / cols
+        },
+      },
+      start: () => {
+        Tone.Transport.scheduleRepeat((time)=>{
+          let {player, board} = this.state
+          for(const [i, row] of board.data.entries()){
+            const notes = settings.notes
+            let newPos = Math.floor((player.position / 100) * row.length)
+            if (playPosition[i] !== newPos) {
+              playPosition[i] = newPos
+              if (playPosition[i] === row.length) {
+                playPosition[i] = 0
+              }
+              const note = notes[row[playPosition[i]]]
+              if(note !== 0){
+                synths[i].triggerAttackRelease(note + (i + 2).toString(), "16n", time)
+              }
+            }
+          }
+          if (player.position >= 100) {
+            player.position = 1
+            if (this.state.randomiseNext === true){
+              const newData = randomBoard()
+              let board = this.state.board
+              board.data = newData
+              this.setState({board: board, randomiseNext: false})
+            }
+          } else {
+            player.position += (100 / (24 * 4))
+          }
+          this.setState({player: player, playPosition: playPosition})
+        }, "1i")
+        Tone.Transport.start("+0.1")
+        Tone.start()
+        let playPosition = []
+        for(let i = 0; i < 6; i++){
+          playPosition[i] = -1
+        }
+        let {player} = this.state
+        player.position = 1
+        this.setState({player: player, playPosition: playPosition, playing: true})
+      },
+      stop: ()=>{
+        Tone.Transport.stop()
+        Tone.Transport.cancel()
+        let {player} = this.state
+        let playPosition = []
+        for(let i = 0; i < 6; i++){
+          playPosition[i] = -1
+        }
+        player.position = 0
+        this.setState({player: player, playPosition: playPosition, playing: false, randomiseNext: false})
+      },
+      randomise: ()=>{
+        if (this.state.playing === true) {
+          this.setState({randomiseNext: true})
+        } else {
+          const newData = randomBoard()
+          let board = this.state.board
+          board.data = newData
+          this.setState({board: board})
         }
       },
       playing: false,
@@ -113,96 +159,20 @@ class App extends Component {
       randomiseNext: false,
       randomiseInterval: 4
     }
-
   }
   componentDidMount(){
     Tone.Transport.PPQ = 24
     Tone.Transport.bpm.value = 60
   }
-
-  randomise(){
-    if (this.state.playing === true) {
-      this.setState({randomiseNext: true})
-    } else {
-      const newData = randomBoard()
-      let board = this.state.board
-      board.data = newData
-      this.setState({board: board})
-    }
-  }
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-  }
-  start(){
-    Tone.Transport.scheduleRepeat((time)=>{
-      let {player, board, playPosition, synths} = this.state
-      for(const [i, row] of board.data.entries()){
-        const notes = settings.notes
-        let newPos = Math.floor((player.position / 100) * row.length)
-        if (playPosition[i] !== newPos) {
-          playPosition[i] = newPos
-          if (playPosition[i] === row.length) {
-            playPosition[i] = 0
-          }
-          const note = notes[row[playPosition[i]]]
-          if(note !== 0){
-            synths[i].triggerAttackRelease(note + (i + 2).toString(), "16n", time)
-          }
-        }
-      }
-      if (player.position >= 100) {
-        player.position = 1
-        if (this.state.randomiseNext === true){
-          const newData = randomBoard()
-          let board = this.state.board
-          board.data = newData
-          this.setState({board: board, randomiseNext: false})
-        }
-      } else {
-        player.position += (100 / (24 * 4))
-      }
-      this.setState({player: player, playPosition: playPosition})
-    }, "1i")
-    Tone.Transport.start("+0.1")
-    Tone.start()
-    let playPosition = []
-    for(let i = 0; i < 6; i++){
-      playPosition[i] = -1
-    }
-    let {player} = this.state
-    player.position = 1
-    this.setState({player: player, playPosition: playPosition, playing: true})
-  }
-  stop(){
-    Tone.Transport.stop()
-    Tone.Transport.cancel()
-    let {player} = this.state
-    let playPosition = []
-    for(let i = 0; i < 6; i++){
-      playPosition[i] = -1
-    }
-    player.position = 0
-    this.setState({player: player, playPosition: playPosition, playing: false, randomiseNext: false})
-  }
-  buttonStyle(){
-    return {margin: '5px', float: 'left'}
-  }
   render() {
-    let {board, player} = this.state
+    const desktop = window.innerWidth > 600
+    const boardHeight = desktop ? window.innerHeight - 160 : window.innerHeight - 110
     return (
       <div className="App">
-        <MuiThemeProvider theme={theme}>
-          <AppBar position="static" color='default'>
-          <Toolbar>
-          <Button variant="contained" onClick={this.start} disabled={this.state.playing} style={this.buttonStyle()}><PlayArrowIcon /></Button>
-          <Button variant="contained" onClick={this.stop} disabled={!this.state.playing} style={this.buttonStyle()}><StopIcon /></Button>
-          <Button variant="contained" onClick={this.randomise} disabled={this.state.randomiseNext} style={this.buttonStyle()}>Randomise</Button>
-          </Toolbar>
-          </AppBar>
-        </MuiThemeProvider>
-        <Board board={board} player={player} />
+        <Controls {...this.state} />
+        <Board {...this.state} desktop={desktop} boardHeight={boardHeight}/>
       </div>
-    );
+    )
   }
 }
 

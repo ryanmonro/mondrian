@@ -11,22 +11,18 @@ const colours = {
 }
 
 export default class Tile extends Component {
-  colour(){
-    return colours[Object.keys(colours)[this.props.note]]
-  }
   render(){
-    let {board, player, col, cols, rowIndex} = this.props
+    let {board, player, col, cols, row} = this.props
     let width = (100 / cols).toString() + "%"
+    const colour = colours[Object.keys(colours)[this.props.note]]
     return (
       <div className={player.tileIsPlaying(col, cols) ? "Tile playing" : "Tile"}
         style={{ width: width }}
       >
         <div 
           className="TileInner" 
-          onClick={()=>board.changeTile(rowIndex, col)}
-          style={{
-            background: this.colour()
-          }}>
+          onClick={()=>board.changeTile(row, col)}
+          style={{ background: colour }}>
         </div>
       </div>
     )
