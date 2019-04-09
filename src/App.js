@@ -63,51 +63,50 @@ class App extends Component {
     this.start = this.start.bind(this)
     this.stop = this.stop.bind(this)
     this.randomise = this.randomise.bind(this)
-    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
     this.state = {
-      windowWidth: 0,
-      windowHeight: 0,
       board: {
         data: randomBoard(),
-        functions: {
-          'changeTile': (row, col) => {
-            let {board} = this.state
-            board.data[row][col] = (board.data[row][col] + 1) % 6
+        'changeTile': (row, col) => {
+          let {board} = this.state
+          board.data[row][col] = (board.data[row][col] + 1) % 6
+          this.setState({board: board})
+        },
+        'addTile': (row) => {
+          let {board} = this.state
+          if (board.data[row].length < 9){
+            board.data[row].push(0)
             this.setState({board: board})
-          },
-          'addTile': (row) => {
-            let {board} = this.state
-            if (board.data[row].length < 9){
-              board.data[row].push(0)
-              this.setState({board: board})
-            }
-          },
-          'subtractTile': (row) => {
-            let {board} = this.state
-            if (board.data[row].length > 1){
-              board.data[row].pop()
-              this.setState({board: board})
-            }
-          },
-          'addRow': () => {
-            let {board} = this.state
-            if (board.data.length < 6){
-              board.data.push([0,0,0,0])
-              this.setState({board: board})
-            }
-          },
-          'subtractRow': () => {
-            let {board} = this.state
-            if (board.data.length > 1){
-              board.data.pop()
-              this.setState({board: board})
-            }
           }
         },
+        'subtractTile': (row) => {
+          let {board} = this.state
+          if (board.data[row].length > 1){
+            board.data[row].pop()
+            this.setState({board: board})
+          }
+        },
+        'addRow': () => {
+          let {board} = this.state
+          if (board.data.length < 6){
+            board.data.push([0,0,0,0])
+            this.setState({board: board})
+          }
+        },
+        'subtractRow': () => {
+          let {board} = this.state
+          if (board.data.length > 1){
+            board.data.pop()
+            this.setState({board: board})
+          }
+        }
       },
       player: {
         position: 0,
-
+        tileIsPlaying: function(col, cols) {
+          const percent = this.position / 100
+          if (this.position === 0) return false
+          return percent >= col / cols && percent <= (col + 1) / cols
+        }
       },
       playing: false,
       synths: synths,
@@ -117,18 +116,10 @@ class App extends Component {
 
   }
   componentDidMount(){
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
     Tone.Transport.PPQ = 24
     Tone.Transport.bpm.value = 60
   }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-  }
 
-  updateWindowDimensions() {
-    this.setState({ windowWidth: window.innerWidth, windowHeight:window.innerHeight });
-  }
   randomise(){
     if (this.state.playing === true) {
       this.setState({randomiseNext: true})
@@ -198,12 +189,6 @@ class App extends Component {
   }
   render() {
     let {board, player} = this.state
-    let desktop = this.state.windowWidth > 600
-    let ui = {
-      desktop: desktop,
-      width: this.state.windowWidth,
-      height: desktop ? this.state.windowHeight - 160 : this.state.windowHeight - 110
-    }
     return (
       <div className="App">
         <MuiThemeProvider theme={theme}>
@@ -215,7 +200,7 @@ class App extends Component {
           </Toolbar>
           </AppBar>
         </MuiThemeProvider>
-        <Board board={board} player={player} ui={ui} />
+        <Board board={board} player={player} />
       </div>
     );
   }

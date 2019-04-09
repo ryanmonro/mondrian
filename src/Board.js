@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
 import {Swipeable} from 'react-touch'
 import Row from './Row';
-import './Board.css';
+import './Board.scss';
 
 export default class Board extends Component {
   render(){
-    let {board, player, ui} = this.props
+    let {board, player} = this.props
+    let desktop = window.innerWidth > 600
     return (
       <div className="boardOuter">
         <div className="longButtonOuter">
-          <div className="rowButton long subtract" onClick={ui.desktop ? board.functions.subtractRow : undefined}>–</div>
-          </div>
-          <Swipeable onSwipeUp={board.functions.addRow} onSwipeDown={board.functions.subtractRow} >
-        <div className="Board">
-          { board.data.map((v, k) => 
-            <Row row={v} key={k} index={k} board={board}
-              player={player} 
-              ui={ui}
-            /> ) 
-          }
+          <div className="rowButton long subtract" onClick={desktop ? board.subtractRow : undefined}>–</div>
         </div>
-          </Swipeable>
+        <Swipeable onSwipeUp={board.addRow} onSwipeDown={board.subtractRow} >
+          <div className="Board">
+            { board.data.map((v, k) => 
+              <Row key={k} row={v} rowIndex={k} board={board}
+                player={player} 
+              /> ) 
+            }
+          </div>
+        </Swipeable>
         <div className="longButtonOuter">
-          <div className="rowButton long add" onClick={ui.desktop ? board.functions.addRow : undefined}>+</div>
+          <div className="rowButton long add" onClick={desktop ? board.addRow : undefined}>+</div>
         </div>
       </div>
     )
