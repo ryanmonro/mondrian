@@ -9,12 +9,9 @@ export default class RowButton extends Component {
       className += " long"
       outerClassName = "longButtonOuter"
       onClick = add ? board.addRow : board.subtractRow
-    } else {
-      outerClassName += add ? " right" : " left"
-
     }
     className +=  add ? " add" : " subtract"
-    const text = add ? "+" : "-"
+    const text = add ? "+" : "–"
     return (
       <div className={outerClassName}>
         <div className={className} onClick={desktop ? onClick : undefined}
