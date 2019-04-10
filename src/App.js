@@ -66,12 +66,12 @@ class App extends Component {
       },
       'addTile': (row) => {
         let {composition} = this.state
-        composition.addTileToRow(row)
+        composition.addTileToRow(row.row)
         this.setState({composition: composition})
       },
       'subtractTile': (row) => {
         let {composition} = this.state
-        composition.subtractTileFromRow(row)
+        composition.subtractTileFromRow(row.row)
         this.setState({composition: composition})
       },
       'randomise': () => {

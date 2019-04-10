@@ -1,33 +1,10 @@
-// function randomBoard(){
-//   let board = []
-//   const height = 4
-//   // settings.minHeight + Math.floor(Math.random() * (settings.maxHeight - settings.minHeight + 1))
-//   for(var i = 0; i < height; i++){
-//     var row = []
-//     let width = settings.subdivs[Math.floor(Math.random() * 5)]
-//     //Math.pow(2, Math.floor(Math.random() * 4))
-//       // Math.ceil(Math.random() * settings.maxWidth))
-//     for(var t = 0; t < width; t++){
-//       let note = 0
-//       if (Math.random() > settings.chanceOfRest){
-//         note = Math.ceil(Math.random() * (settings.notes.length - 1))
-//       }
-//       row.push(note)
-//     }
-//     board.push(row)
-//   }
-//   return board
-// }
-
-
-
 const MINROWS = 2
 const MAXROWS = 6
-// const INITIALROWS = 4
 const MINWIDTH = 1
 const MAXWIDTH = 5
-// const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
 const CHANCEOFREST = 0.5
+const NOTES = ['C', 'D', 'E', 'G', 'A']
+// const INITIALROWS = 4
 // const SUBDIVS = [2,3,4,5,6,8]
 
 class Composition {
@@ -57,6 +34,9 @@ class Composition {
   subtractTileFromRow(row){
     this.rows[row].subtractTile()
   }
+  length(){
+    return this.rows.length
+  }
 }
 
 class CompositionRow {
@@ -66,6 +46,7 @@ class CompositionRow {
     this.randomise()
   }
   randomise(){
+    // consider restricting to one of SUBDIVS again
     let numberOfTiles = 1 + Math.ceil(Math.random() * 7)
     for(let i = 0; i < numberOfTiles; i++){
       this.tiles.push(new CompositionTile(this.row, this.tiles.length, true))
@@ -76,6 +57,9 @@ class CompositionRow {
   }
   subtractTile(){
     this.tiles.length > MINWIDTH && this.tiles.pop()
+  }
+  length(){
+    return this.tiles.length
   }
 }
 
@@ -91,7 +75,7 @@ class CompositionTile {
   }
   randomise(){
     if (Math.random() > CHANCEOFREST){
-      this.note = Math.floor(Math.random() * 6) + 1
+      this.note = Math.floor(Math.random() * NOTES.length)
     }
   }
   isPlaying(){
