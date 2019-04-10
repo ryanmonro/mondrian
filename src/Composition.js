@@ -9,11 +9,8 @@ const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
 const SUBDIVS = [2,3,4,5,6,8]
 // const INITIALROWS = 4
 
-
 class Composition {
   constructor(){
-    Tone.Transport.PPQ = 24
-    Tone.Transport.bpm.value = 60
     this.position = 0
     this.playing = false
     this.randomiseNext = false

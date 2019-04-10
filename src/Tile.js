@@ -21,15 +21,17 @@ export default class Tile extends Component {
     return result
   }
   render(){
-    let {tile, handler, width} = this.props
+    let {tile, updateComposition, width} = this.props
     const colour = colours[tile.note]
+    const onClick = () => updateComposition((composition)=>{
+              composition.change(tile.row, tile.col)})
     return (
       <div className={this.isPlaying() ? "Tile playing" : "Tile"}
         style={{ width: width }}
       >
         <div 
           className="TileInner" 
-          onClick={()=>handler('change', tile)}
+          onClick={onClick}
           style={{ background: colour }}>
         </div>
       </div>
