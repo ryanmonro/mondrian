@@ -3,6 +3,7 @@ import './App.css'
 import Board from './Board'
 import Tone from 'tone'
 import Controls from './Controls'
+import Composition from './Composition'
 
 const settings = {
   minHeight: 2,
@@ -47,12 +48,14 @@ class App extends Component {
       }).toMaster())
     }
     this.state = {
+      composition: new Composition(),
       board: {
         data: randomBoard(),
-        'changeTile': (row, col) => {
-          let {board} = this.state
-          board.data[row][col] = (board.data[row][col] + 1) % 6
-          this.setState({board: board})
+        'changeTile': (row, col, tile) => {
+          let {board, composition} = this.state
+          // board.data[row][col] = (board.data[row][col] + 1) % 6
+          composition.change(row, col)
+          this.setState({board: board, composition: composition})
         },
         'addTile': (row) => {
           let {board} = this.state
