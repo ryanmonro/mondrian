@@ -49,35 +49,33 @@ class App extends Component {
     }
     this.state = {
       composition: new Composition(),
-      'changeTile': (tile) => {
-        let {composition} = this.state
-        composition.change(tile.row, tile.col)
-        this.setState({composition: composition})
-      },
-      'addRow': () => {
-        let {composition} = this.state
-        composition.addRow()
-        this.setState({composition: composition})
-      },
-      'subtractRow': () => {
-        let {composition} = this.state
-        composition.subtractRow()
-        this.setState({composition: composition})
-      },
-      'addTile': (row) => {
-        let {composition} = this.state
-        composition.addTileToRow(row.row)
-        this.setState({composition: composition})
-      },
-      'subtractTile': (row) => {
-        let {composition} = this.state
-        composition.subtractTileFromRow(row.row)
-        this.setState({composition: composition})
-      },
-      'randomise': () => {
-        let {composition} = this.state
-        composition.randomise()
-        this.setState({composition: composition})
+      'handleCompositionChange': (cmd, data) => {
+        this.setState((prevState) => {
+          switch(cmd){
+            case 'change':
+              prevState.composition.change(data.row, data.col)
+              break
+            case 'addRow':
+              prevState.composition.addRow()
+              break
+            case 'subtractRow':
+              prevState.composition.subtractRow()
+              break
+            case 'addTile':
+              prevState.composition.addTileToRow(data.row)
+              break
+            case 'subtractTile':
+              prevState.composition.subtractTileFromRow(data.row)
+              break
+            case 'randomise':
+              prevState.composition.randomise()
+              break
+            default:
+              console.log('bad composition change command: ' + cmd)
+              break
+          }
+          return {composition: prevState.composition}
+        })
       },
       board: {
         data: randomBoard(),

@@ -6,7 +6,7 @@ import './Row.scss'
 
 export default class Row extends Component {
   render(){
-    let {addTile, subtractTile, row, height, composition} = this.props
+    let {row, height, composition, handleCompositionChange} = this.props
     const style = {
       height: height,
       borderTop: row.row === 0 ? "5px solid #212121" : "",
@@ -15,11 +15,11 @@ export default class Row extends Component {
     return (
       <div className="RowOuter">
         <RowButton {...this.props} add={false} height={height}/>
-        <Swipeable onSwipeRight={()=>subtractTile(row)} onSwipeLeft={()=>addTile(row)} >
+        <Swipeable onSwipeRight={()=>handleCompositionChange('subtractTile', row)} onSwipeLeft={()=>handleCompositionChange('addTile', row)} >
           <div className="Row" style={style}>
             { row.tiles.map((v, k) => 
               <Tile {...this.props} tile={v} key={k} 
-                width={(100 / row.length()).toString() + "%"}
+                width={(100 / row.tiles.length).toString() + "%"}
               />
               ) 
             }

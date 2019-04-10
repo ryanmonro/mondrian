@@ -34,9 +34,6 @@ class Composition {
   subtractTileFromRow(row){
     this.rows[row].subtractTile()
   }
-  length(){
-    return this.rows.length
-  }
 }
 
 class CompositionRow {
@@ -56,9 +53,6 @@ class CompositionRow {
   }
   subtractTile(){
     this.tiles.length > MINWIDTH && this.tiles.pop()
-  }
-  length(){
-    return this.tiles.length
   }
 }
 
