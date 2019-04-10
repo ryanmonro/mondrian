@@ -21,7 +21,7 @@ export default class Tile extends Component {
       >
         <div 
           className="TileInner" 
-          onClick={()=>board.changeTile(row, col, tile)}
+          onClick={()=>this.props.changeTile(row, col, tile)}
           style={{ background: colour }}>
         </div>
       </div>

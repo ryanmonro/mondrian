@@ -8,7 +8,7 @@ export default class RowButton extends Component {
     if (long) {
       className += " long"
       outerClassName = "longButtonOuter"
-      onClick = add ? board.addRow : board.subtractRow
+      onClick = add ? this.props.addRow : this.props.subtractRow
     }
     className +=  add ? " add" : " subtract"
     const text = add ? "+" : "–"

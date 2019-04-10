@@ -49,14 +49,23 @@ class App extends Component {
     }
     this.state = {
       composition: new Composition(),
+      'changeTile': (row, col, tile) => {
+        let {composition} = this.state
+        composition.change(row, col)
+        this.setState({composition: composition})
+      },
+      'addRow': () => {
+        let {composition} = this.state
+        composition.addRow()
+        this.setState({composition: composition})
+      },
+      'subtractRow': () => {
+        let {composition} = this.state
+        composition.subtractRow()
+        this.setState({composition: composition})
+      },
       board: {
         data: randomBoard(),
-        'changeTile': (row, col, tile) => {
-          let {board, composition} = this.state
-          // board.data[row][col] = (board.data[row][col] + 1) % 6
-          composition.change(row, col)
-          this.setState({board: board, composition: composition})
-        },
         'addTile': (row) => {
           let {board} = this.state
           if (board.data[row].length < 9){

@@ -22,7 +22,7 @@
 
 
 const MINROWS = 2
-const MAXROWS = 8
+const MAXROWS = 6
 const INITIALROWS = 4
 const MINWIDTH = 1
 const MAXWIDTH = 5
@@ -45,6 +45,7 @@ class Composition {
     }
   }
   addRow(){
+    // currently adds a random row. Should it?
     this.rows.length < MAXROWS && this.rows.push(new CompositionRow(this.rows.length))
   }
   subtractRow(){
