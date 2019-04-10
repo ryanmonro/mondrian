@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
+import Tone from 'tone'
 import Composition from './Composition'
 import Board from './Board'
 import Controls from './Controls'
@@ -9,7 +10,35 @@ class App extends Component {
     super(props)
     this.state = {
       composition: new Composition(),
-      'handler': (cmd, data) => {
+      updateComposition: (fn) => {
+        this.setState((prevState) => {
+          fn(prevState)
+          return {composition: prevState.composition}
+        })
+      },
+      play: () => {
+        Tone.Transport.scheduleRepeat((time)=>{
+          this.state.updateComposition((prevState)=>{
+            prevState.composition.play(time)
+          })
+        }, "1i")
+        Tone.Transport.start("+0.2")
+        Tone.start()
+        this.state.updateComposition((prevState)=>{
+          prevState.composition.playing = true
+          prevState.composition.position = 1
+        })
+      },
+      stop: () => {
+        Tone.Transport.stop()
+        Tone.Transport.cancel()
+        this.state.updateComposition((prevState)=>{
+          prevState.composition.position = 0
+          prevState.composition.playing = false
+          prevState.composition.randomiseNext = false
+        })
+      },
+      handler: (cmd, data) => {
         this.setState((prevState) => {
           switch(cmd){
             case 'change':
@@ -29,12 +58,6 @@ class App extends Component {
               break
             case 'randomise':
               prevState.composition.randomise()
-              break
-            case 'play':
-              prevState.composition.play()
-              break
-            case 'stop':
-              prevState.composition.stop()
               break
             default:
               console.log('Bad composition change command: ' + cmd)

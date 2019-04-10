@@ -3,7 +3,7 @@ import Tone from 'tone'
 const MINROWS = 2
 const MAXROWS = 6
 const MINWIDTH = 1
-const MAXWIDTH = 8
+const MAXWIDTH = 9
 const CHANCEOFREST = 0.5
 const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
 const SUBDIVS = [2,3,4,5,6,8]
@@ -14,21 +14,17 @@ class Composition {
   constructor(){
     Tone.Transport.PPQ = 24
     Tone.Transport.bpm.value = 60
-    this.player = {
-      position: 0,
-      playing: false,
-      randomiseNext: false,
-      // randomiseInterval:
-    }
+    this.position = 0
+    this.playing = false
+    this.randomiseNext = false
     this.randomise()
   }
   change(row, col){
     this.rows[row].tiles[col].change()
   }
-  play = ()=>{
-    Tone.Transport.scheduleRepeat((time)=>{
+  play = (time)=>{
       for(const row of this.rows){
-        let newPos = Math.floor((this.player.position / 100) * row.tiles.length)
+        let newPos = Math.floor((this.position / 100) * row.tiles.length)
         if (row.position !== newPos) {
           row.position = newPos
           if (row.position === row.tiles.length) {
@@ -36,45 +32,35 @@ class Composition {
           }
           const note = NOTES[row.tiles[row.position].note]
           if(note !== 0){
-            console.log(time)
             row.synth.triggerAttackRelease(note + (row.row + 2).toString(), "32n", time)
           }
         }
       }
-      if (this.player.position >= 100) {
-        this.player.position = 1
-        if (this.player.randomiseNext === true){
+      if (this.position >= 100) {
+        this.position = 1
+        if (this.randomiseNext === true){
           this.randomiseRows()
-          this.player.randomiseNext = false
+          this.randomiseNext = false
         }
       } else {
-        this.player.position += (100 / (24 * 4))
-        // console.log(this.player.position)
+        this.position += (100 / (24 * 4))
       }
-    }, "1i")
-    Tone.Transport.start("+0.01")
-    Tone.start()
-    this.player.playing = true
-    this.player.position = 1
   }
   stop = ()=>{
-    Tone.Transport.stop()
-    Tone.Transport.cancel()
-    this.player.position = 0
-    this.player.playing = false
-    this.player.randomiseNext = false
+    this.position = 0
+    this.playing = false
+    this.randomiseNext = false
   }
   randomise = ()=>{
-    if (this.player.playing === true) {
-      this.player.randomiseNext = true
+    if (this.playing === true) {
+      this.randomiseNext = true
     } else {
       this.randomiseRows()
     }
   }
   randomiseRows = ()=>{
-    console.log('RANDOM')
     this.rows = []
-    this.player.randomiseNext = false
+    this.randomiseNext = false
     let numberOfRows = 1 + Math.ceil(Math.random() * 3)
     for(let i = 0; i < numberOfRows; i++){
       this.addRow()
@@ -138,14 +124,6 @@ class CompositionTile {
     if (Math.random() > CHANCEOFREST){
       this.note = Math.floor(Math.random() * (NOTES.length - 1)) + 1
     }
-  }
-  isPlaying(){
-    const position = this.composition.player.position
-    const cols = this.composition.rows[this.row].length
-    const percent = position / 100
-    console.log(position)
-    if (position === 0) return false
-    return percent >= this.col / cols && percent <= (this.col + 1) / cols
   }
 }
 
