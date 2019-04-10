@@ -9,7 +9,7 @@ class App extends Component {
     super(props)
     this.state = {
       composition: new Composition(),
-      'handleCompositionChange': (cmd, data) => {
+      'handler': (cmd, data) => {
         this.setState((prevState) => {
           switch(cmd){
             case 'change':

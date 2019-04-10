@@ -3,7 +3,7 @@ import Tone from 'tone'
 const MINROWS = 2
 const MAXROWS = 6
 const MINWIDTH = 1
-const MAXWIDTH = 5
+const MAXWIDTH = 8
 const CHANCEOFREST = 0.5
 const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
 const SUBDIVS = [2,3,4,5,6,8]
@@ -37,7 +37,7 @@ class Composition {
           const note = NOTES[row.tiles[row.position].note]
           if(note !== 0){
             console.log(time)
-            row.synth.triggerAttackRelease(note + (row.row + 2).toString(), "16n", time)
+            row.synth.triggerAttackRelease(note + (row.row + 2).toString(), "32n", time)
           }
         }
       }
@@ -49,9 +49,10 @@ class Composition {
         }
       } else {
         this.player.position += (100 / (24 * 4))
+        // console.log(this.player.position)
       }
     }, "1i")
-    Tone.Transport.start("+0.1")
+    Tone.Transport.start("+0.01")
     Tone.start()
     this.player.playing = true
     this.player.position = 1
@@ -61,7 +62,7 @@ class Composition {
     Tone.Transport.cancel()
     this.player.position = 0
     this.player.playing = false
-    this.randomiseNext = false
+    this.player.randomiseNext = false
   }
   randomise = ()=>{
     if (this.player.playing === true) {
@@ -81,7 +82,7 @@ class Composition {
   }
   addRow(){
     // currently adds a random row. Should it?
-    this.rows.length < MAXROWS && this.rows.push(new CompositionRow(this.rows.length))
+    this.rows.length < MAXROWS && this.rows.push(new CompositionRow(this, this.rows.length))
   }
   subtractRow(){
     this.rows.length > MINROWS && this.rows.pop()
@@ -95,7 +96,8 @@ class Composition {
 }
 
 class CompositionRow {
-  constructor(row){
+  constructor(composition, row){
+    this.composition = composition
     this.tiles = []
     this.row = row
     this.randomise()
@@ -110,11 +112,11 @@ class CompositionRow {
   randomise(){
     let numberOfTiles = SUBDIVS[Math.floor(Math.random() * SUBDIVS.length)]
     for(let i = 0; i < numberOfTiles; i++){
-      this.tiles.push(new CompositionTile(this.row, this.tiles.length, true))
+      this.tiles.push(new CompositionTile(this.composition, this.row, this.tiles.length, true))
     }
   }
   addTile(){
-    this.tiles.length < MAXWIDTH && this.tiles.push(new CompositionTile(this.row, this.tiles.length))
+    this.tiles.length < MAXWIDTH && this.tiles.push(new CompositionTile(this.composition, this.row, this.tiles.length))
   }
   subtractTile(){
     this.tiles.length > MINWIDTH && this.tiles.pop()
@@ -122,7 +124,8 @@ class CompositionRow {
 }
 
 class CompositionTile {
-  constructor(row, col, randomise=false){
+  constructor(composition, row, col, randomise=false){
+    this.composition = composition
     this.note = 0
     this.row = row
     this.col = col
@@ -136,14 +139,13 @@ class CompositionTile {
       this.note = Math.floor(Math.random() * (NOTES.length - 1)) + 1
     }
   }
-  isPlaying(position){
-    // tileIsPlaying: function(col, cols) {
-    //     const percent = this.position / 100
-    //     if (this.position === 0) return false
-    //     return percent >= col / cols && percent <= (col + 1) / cols
-    // }
-    // come back to this
-    return false
+  isPlaying(){
+    const position = this.composition.player.position
+    const cols = this.composition.rows[this.row].length
+    const percent = position / 100
+    console.log(position)
+    if (position === 0) return false
+    return percent >= this.col / cols && percent <= (this.col + 1) / cols
   }
 }
 

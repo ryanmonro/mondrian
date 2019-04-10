@@ -17,15 +17,15 @@ const theme = createMuiTheme({
 
 class Controls extends Component {
   render(){
-    const {composition, handleCompositionChange} = this.props
+    const {composition, handler} = this.props
     const buttonStyle = {margin: '5px', float: 'left'}
     return (
       <MuiThemeProvider theme={theme}>
         <AppBar position="static" color='default'>
         <Toolbar>
-        <Button variant="contained" onClick={()=>handleCompositionChange('play')} disabled={composition.player.playing} style={buttonStyle}><PlayArrowIcon /></Button>
-        <Button variant="contained" onClick={()=>handleCompositionChange('stop')} disabled={!composition.player.playing} style={buttonStyle}><StopIcon /></Button>
-        <Button variant="contained" onClick={()=>handleCompositionChange('randomise')} disabled={composition.player.randomiseNext} style={buttonStyle}>Randomise</Button>
+        <Button variant="contained" onClick={()=>handler('play')} disabled={composition.player.playing} style={buttonStyle}><PlayArrowIcon /></Button>
+        <Button variant="contained" onClick={()=>handler('stop')} disabled={!composition.player.playing} style={buttonStyle}><StopIcon /></Button>
+        <Button variant="contained" onClick={()=>handler('randomise')} disabled={composition.player.randomiseNext} style={buttonStyle}>Randomise</Button>
         </Toolbar>
         </AppBar>
       </MuiThemeProvider>

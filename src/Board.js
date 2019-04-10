@@ -6,12 +6,12 @@ import './Board.scss';
 
 export default class Board extends Component {
   render(){
-    let {composition, boardHeight, handleCompositionChange} = this.props
+    let {composition, boardHeight, handler} = this.props
     const height = (boardHeight / composition.rows.length).toString() + "px"
     return (
       <div className="Board">
         <RowButton {...this.props} long={true} add={false} />
-        <Swipeable onSwipeUp={()=>handleCompositionChange('addRow')} onSwipeDown={()=>handleCompositionChange('subtractRow')} >
+        <Swipeable onSwipeUp={()=>handler('addRow')} onSwipeDown={()=>handler('subtractRow')} >
           <div className="BoardInner">
             { composition.rows.map((v, k) => 
               <Row {...this.props} key={k} row={v} height={height}
