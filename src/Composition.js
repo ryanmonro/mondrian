@@ -3,9 +3,9 @@ const MAXROWS = 6
 const MINWIDTH = 1
 const MAXWIDTH = 5
 const CHANCEOFREST = 0.5
-const NOTES = ['C', 'D', 'E', 'G', 'A']
+const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
+const SUBDIVS = [2,3,4,5,6,8]
 // const INITIALROWS = 4
-// const SUBDIVS = [2,3,4,5,6,8]
 
 class Composition {
   constructor(){
@@ -46,8 +46,7 @@ class CompositionRow {
     this.randomise()
   }
   randomise(){
-    // consider restricting to one of SUBDIVS again
-    let numberOfTiles = 1 + Math.ceil(Math.random() * 7)
+    let numberOfTiles = SUBDIVS[Math.floor(Math.random() * SUBDIVS.length)]
     for(let i = 0; i < numberOfTiles; i++){
       this.tiles.push(new CompositionTile(this.row, this.tiles.length, true))
     }
@@ -75,7 +74,7 @@ class CompositionTile {
   }
   randomise(){
     if (Math.random() > CHANCEOFREST){
-      this.note = Math.floor(Math.random() * NOTES.length)
+      this.note = Math.floor(Math.random() * (NOTES.length - 1)) + 1
     }
   }
   isPlaying(){
