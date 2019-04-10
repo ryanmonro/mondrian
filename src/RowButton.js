@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 
 export default class RowButton extends Component {
   render(){
-    const {desktop, board, long, add, row, height} = this.props
+    const {desktop, long, add, row, height} = this.props
     let className = "rowButton", outerClassName = "rowButtonOuter"
-    let onClick = add ? ()=>board.addTile(row) : ()=>board.subtractTile(row)
+    let onClick = add ? ()=>this.props.addTile(row) : ()=>this.props.subtractTile(row)
     if (long) {
       className += " long"
       outerClassName = "longButtonOuter"

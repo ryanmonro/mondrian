@@ -49,9 +49,9 @@ class App extends Component {
     }
     this.state = {
       composition: new Composition(),
-      'changeTile': (row, col, tile) => {
+      'changeTile': (tile) => {
         let {composition} = this.state
-        composition.change(row, col)
+        composition.change(tile.row, tile.col)
         this.setState({composition: composition})
       },
       'addRow': () => {
@@ -64,15 +64,23 @@ class App extends Component {
         composition.subtractRow()
         this.setState({composition: composition})
       },
+      'addTile': (row) => {
+        let {composition} = this.state
+        composition.addTileToRow(row)
+        this.setState({composition: composition})
+      },
+      'subtractTile': (row) => {
+        let {composition} = this.state
+        composition.subtractTileFromRow(row)
+        this.setState({composition: composition})
+      },
+      'randomise': () => {
+        let {composition} = this.state
+        composition.randomise()
+        this.setState({composition: composition})
+      },
       board: {
         data: randomBoard(),
-        'addTile': (row) => {
-          let {board} = this.state
-          if (board.data[row].length < 9){
-            board.data[row].push(0)
-            this.setState({board: board})
-          }
-        },
         'subtractTile': (row) => {
           let {board} = this.state
           if (board.data[row].length > 1){
@@ -156,7 +164,7 @@ class App extends Component {
         player.position = 0
         this.setState({player: player, playPosition: playPosition, playing: false, randomiseNext: false})
       },
-      randomise: ()=>{
+      brandomise: ()=>{
         if (this.state.playing === true) {
           this.setState({randomiseNext: true})
         } else {

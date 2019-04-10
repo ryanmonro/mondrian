@@ -23,22 +23,22 @@
 
 const MINROWS = 2
 const MAXROWS = 6
-const INITIALROWS = 4
+// const INITIALROWS = 4
 const MINWIDTH = 1
 const MAXWIDTH = 5
-const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
+// const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
 const CHANCEOFREST = 0.5
-const SUBDIVS = [2,3,4,5,6,8]
+// const SUBDIVS = [2,3,4,5,6,8]
 
 class Composition {
   constructor(){
-    this.rows = []
     this.randomise()
   }
   change(row, col){
     this.rows[row].tiles[col].change()
   }
   randomise(){
+    this.rows = []
     let numberOfRows = 1 + Math.ceil(Math.random() * 3)
     for(let i = 0; i < numberOfRows; i++){
       this.addRow()
@@ -51,7 +51,12 @@ class Composition {
   subtractRow(){
     this.rows.length > MINROWS && this.rows.pop()
   }
-
+  addTileToRow(row){
+    this.rows[row].addTile()
+  }
+  subtractTileFromRow(row){
+    this.rows[row].subtractTile()
+  }
 }
 
 class CompositionRow {
@@ -70,7 +75,7 @@ class CompositionRow {
     this.tiles.length < MAXWIDTH && this.tiles.push(new CompositionTile(this.row, this.tiles.length))
   }
   subtractTile(){
-    this.tiles.length < MINWIDTH && this.tiles.pop()
+    this.tiles.length > MINWIDTH && this.tiles.pop()
   }
 }
 
@@ -88,6 +93,10 @@ class CompositionTile {
     if (Math.random() > CHANCEOFREST){
       this.note = Math.floor(Math.random() * 6) + 1
     }
+  }
+  isPlaying(){
+    // come back to this
+    return false
   }
 }
 
