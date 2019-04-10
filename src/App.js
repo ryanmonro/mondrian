@@ -180,17 +180,24 @@ class App extends Component {
       randomiseInterval: 4
     }
   }
+  updateWindowDimensions = () => {
+    const desktop = window.innerWidth > 600
+    const boardHeight = desktop ? window.innerHeight - 160 : 
+      window.innerHeight - 110
+    this.setState({boardHeight: boardHeight, desktop: desktop})
+
+  }
   componentDidMount(){
     Tone.Transport.PPQ = 24
     Tone.Transport.bpm.value = 60
+    this.updateWindowDimensions()
+    window.addEventListener("resize", this.updateWindowDimensions);
   }
   render() {
-    const desktop = window.innerWidth > 600
-    const boardHeight = desktop ? window.innerHeight - 160 : window.innerHeight - 110
     return (
       <div className="App">
         <Controls {...this.state} />
-        <Board {...this.state} desktop={desktop} boardHeight={boardHeight}/>
+        <Board {...this.state} />
       </div>
     )
   }

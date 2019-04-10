@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import './Tile.scss';
 
-const colours = {
-  "white": "#FFFFFF",
-  "red": "#F70F0F",
-  "yellow": "#FCD318",
-  "blue": "#344D90",
-  "grey": "#A3A3A3",
-  "black": "#212121",
-}
+const colours = [
+  "#FFFFFF", // white
+  "#F70F0F", // red
+  "#FCD318", // yellow
+  "#344D90", // blue
+  "#A3A3A3", // grey
+  "#212121" // black
+]
 
 export default class Tile extends Component {
   render(){
     let {tile, changeTile, width} = this.props
-    const colour = colours[Object.keys(colours)[tile.note]]
+    const colour = colours[tile.note]
     return (
       <div className={tile.isPlaying() ? "Tile playing" : "Tile"}
         style={{ width: width }}
