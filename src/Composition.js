@@ -14,98 +14,70 @@ class Composition {
   constructor(){
     Tone.Transport.PPQ = 24
     Tone.Transport.bpm.value = 60
-    this.randomise()
-    let synths = []
-    for (let i = 0; i < 6; i++){
-      synths.push(new Tone.Synth({
-        oscillator: {
-          type: "sine"
-        },
-        volume: -12
-      }).toMaster())
-    }
     this.player = {
-      synths: synths,
       position: 0,
-      playPosition: [],
       playing: false,
       randomiseNext: false,
-      // randomiseInterval: 4,
-      tileIsPlaying: function(col, cols) {
-        const percent = this.position / 100
-        if (this.position === 0) return false
-        return percent >= col / cols && percent <= (col + 1) / cols
-      },
+      // randomiseInterval:
     }
+    this.randomise()
   }
   change(row, col){
     this.rows[row].tiles[col].change()
   }
-  start(){
-    // Tone.Transport.scheduleRepeat((time)=>{
-    //   let {player, board} = this.state
-    //   for(const [i, row] of board.data.entries()){
-    //     const notes = settings.notes
-    //     let newPos = Math.floor((player.position / 100) * row.length)
-    //     if (playPosition[i] !== newPos) {
-    //       playPosition[i] = newPos
-    //       if (playPosition[i] === row.length) {
-    //         playPosition[i] = 0
-    //       }
-    //       const note = notes[row[playPosition[i]]]
-    //       if(note !== 0){
-    //         synths[i].triggerAttackRelease(note + (i + 2).toString(), "16n", time)
-    //       }
-    //     }
-    //   }
-    //   if (player.position >= 100) {
-    //     player.position = 1
-    //     if (this.state.randomiseNext === true){
-    //       const newData = randomBoard()
-    //       let board = this.state.board
-    //       board.data = newData
-    //       this.setState({board: board, randomiseNext: false})
-    //     }
-    //   } else {
-    //     player.position += (100 / (24 * 4))
-    //   }
-    //   this.setState({player: player, playPosition: playPosition})
-    // }, "1i")
-    // Tone.Transport.start("+0.1")
-    // Tone.start()
-    // let playPosition = []
-    // for(let i = 0; i < 6; i++){
-    //   playPosition[i] = -1
-    // }
-    // let {player} = this.state
-    // player.position = 1
-    // this.setState({player: player, playPosition: playPosition, playing: true})
+  play = ()=>{
+    Tone.Transport.scheduleRepeat((time)=>{
+      for(const row of this.rows){
+        let newPos = Math.floor((this.player.position / 100) * row.tiles.length)
+        if (row.position !== newPos) {
+          row.position = newPos
+          if (row.position === row.tiles.length) {
+            row.position = 0
+          }
+          const note = NOTES[row.tiles[row.position].note]
+          if(note !== 0){
+            console.log(time)
+            row.synth.triggerAttackRelease(note + (row.row + 2).toString(), "16n", time)
+          }
+        }
+      }
+      if (this.player.position >= 100) {
+        this.player.position = 1
+        if (this.player.randomiseNext === true){
+          this.randomiseRows()
+          this.player.randomiseNext = false
+        }
+      } else {
+        this.player.position += (100 / (24 * 4))
+      }
+    }, "1i")
+    Tone.Transport.start("+0.1")
+    Tone.start()
+    this.player.playing = true
+    this.player.position = 1
   }
-  stop(){
-    // Tone.Transport.stop()
-    // Tone.Transport.cancel()
-    // let {player} = this.state
-    // let playPosition = []
-    // for(let i = 0; i < 6; i++){
-    //   playPosition[i] = -1
-    // }
-    // player.position = 0
-    // this.setState({player: player, playPosition: playPosition, playing: false, randomiseNext: false})
+  stop = ()=>{
+    Tone.Transport.stop()
+    Tone.Transport.cancel()
+    this.player.position = 0
+    this.player.playing = false
+    this.randomiseNext = false
   }
-  randomise(){
+  randomise = ()=>{
+    if (this.player.playing === true) {
+      this.player.randomiseNext = true
+    } else {
+      this.randomiseRows()
+    }
+  }
+  randomiseRows = ()=>{
+    console.log('RANDOM')
     this.rows = []
+    this.player.randomiseNext = false
     let numberOfRows = 1 + Math.ceil(Math.random() * 3)
     for(let i = 0; i < numberOfRows; i++){
       this.addRow()
     }
-    // if (this.state.playing === true) {
-      // this.setState({randomiseNext: true})
-    // } else {
-      // const newData = randomBoard()
-      // let board = this.state.board
-      // board.data = newData
-      // this.setState({board: board})
-    // }
   }
   addRow(){
     // currently adds a random row. Should it?
@@ -127,6 +99,13 @@ class CompositionRow {
     this.tiles = []
     this.row = row
     this.randomise()
+    this.position = 0
+    this.synth = new Tone.Synth({
+      oscillator: {
+        type: "sine"
+      },
+      volume: -12
+    }).toMaster()
   }
   randomise(){
     let numberOfTiles = SUBDIVS[Math.floor(Math.random() * SUBDIVS.length)]
@@ -157,7 +136,12 @@ class CompositionTile {
       this.note = Math.floor(Math.random() * (NOTES.length - 1)) + 1
     }
   }
-  isPlaying(){
+  isPlaying(position){
+    // tileIsPlaying: function(col, cols) {
+    //     const percent = this.position / 100
+    //     if (this.position === 0) return false
+    //     return percent >= col / cols && percent <= (col + 1) / cols
+    // }
     // come back to this
     return false
   }
