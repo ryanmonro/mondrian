@@ -79,27 +79,6 @@ class App extends Component {
       },
       board: {
         data: randomBoard(),
-        'subtractTile': (row) => {
-          let {board} = this.state
-          if (board.data[row].length > 1){
-            board.data[row].pop()
-            this.setState({board: board})
-          }
-        },
-        'addRow': () => {
-          let {board} = this.state
-          if (board.data.length < 6){
-            board.data.push([0,0,0,0])
-            this.setState({board: board})
-          }
-        },
-        'subtractRow': () => {
-          let {board} = this.state
-          if (board.data.length > 1){
-            board.data.pop()
-            this.setState({board: board})
-          }
-        }
       },
       player: {
         synths: synths,
