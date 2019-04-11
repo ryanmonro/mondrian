@@ -13,10 +13,15 @@ class App extends Component {
     super(props)
     this.state = {
       composition: new Composition(),
+      synths: [],
       play: () => {
         Tone.Transport.scheduleRepeat((time)=>{
           this.state.updateComposition((c)=>{
-            c.playAtPosition(time)
+            const tiles = c.playAtPosition(time)
+            for(const tile of tiles){
+              const synth = this.state.synths[tile.row]
+              synth.triggerAttackRelease(tile.midiNote(), "32n", time)
+            }
           })
         }, "1i")
         Tone.start()
@@ -52,6 +57,16 @@ class App extends Component {
     Tone.Transport.bpm.value = BPM
     this.updateWindowDimensions()
     window.addEventListener("resize", this.updateWindowDimensions);
+    let synths = []
+    for(let s = 0; s < 8; s++){
+      synths.push(new Tone.Synth({
+        oscillator: {
+          type: "sine"
+        },
+        volume: -12
+      }).toMaster())
+    }
+    this.setState({synths: synths})
   }
   render() {
     return (

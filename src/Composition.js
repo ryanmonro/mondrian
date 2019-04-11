@@ -20,18 +20,17 @@ class Composition {
     this.rows[row].tiles[col].change()
   }
   playAtPosition = (time)=>{
+    let tiles = []
     const ticksPerBar = Tone.Transport.PPQ * 4
     const transport = Tone.Transport.ticks % ticksPerBar
     for(const row of this.rows){
       let newPos = Math.floor(transport * row.tiles.length / ticksPerBar)
       for(const tile of row.tiles){
-        if (tile.col === newPos) {
+        const note = NOTES[tile.note]
+        if (note !== 0 && tile.col === newPos) {
           if (!tile.isPlaying) {
             tile.isPlaying = true
-            const note = NOTES[tile.note]
-            if(note !== 0){
-              row.synth.triggerAttackRelease(note + (tile.row + 2).toString(), "32n", time)
-            }
+            tiles.push(tile)
           }
         } else {
           tile.isPlaying = false
@@ -41,6 +40,7 @@ class Composition {
     if (transport === ticksPerBar - 1 && this.randomiseNext === true){
       this.randomiseRows()
     }
+    return tiles
   }
   play = ()=>{
     this.playing = true
@@ -85,13 +85,6 @@ class CompositionRow {
     this.tiles = []
     this.row = row
     this.randomise()
-    // this.position = 0
-    this.synth = new Tone.Synth({
-      oscillator: {
-        type: "sine"
-      },
-      volume: -12
-    }).toMaster()
   }
   randomise(){
     let numberOfTiles = SUBDIVS[Math.floor(Math.random() * SUBDIVS.length)]
@@ -123,6 +116,9 @@ class CompositionTile {
     if (Math.random() > CHANCEOFREST){
       this.note = Math.floor(Math.random() * (NOTES.length - 1)) + 1
     }
+  }
+  midiNote(){
+    return NOTES[this.note] + (this.row + 2).toString()
   }
 }
 
