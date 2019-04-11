@@ -19,19 +19,22 @@ class Composition {
   change(row, col){
     this.rows[row].tiles[col].change()
   }
-  play = (time)=>{
+  playAtPosition = (time)=>{
     const ticksPerBar = Tone.Transport.PPQ * 4
     const transport = Tone.Transport.ticks % ticksPerBar
     for(const row of this.rows){
       let newPos = Math.floor(transport * row.tiles.length / ticksPerBar)
-      if (row.position !== newPos) {
-        row.position = newPos
-        if (row.position === row.tiles.length) {
-          row.position = 0
-        }
-        const note = NOTES[row.tiles[row.position].note]
-        if(note !== 0){
-          row.synth.triggerAttackRelease(note + (row.row + 2).toString(), "32n", time)
+      for(const tile of row.tiles){
+        if (tile.col === newPos) {
+          if (!tile.isPlaying) {
+            tile.isPlaying = true
+            const note = NOTES[tile.note]
+            if(note !== 0){
+              row.synth.triggerAttackRelease(note + (tile.row + 2).toString(), "32n", time)
+            }
+          }
+        } else {
+          tile.isPlaying = false
         }
       }
     }
@@ -39,9 +42,9 @@ class Composition {
       this.randomiseRows()
     }
   }
-  // play = ()=>{
-  //   this.playing = true
-  // }
+  play = ()=>{
+    this.playing = true
+  }
   stop = ()=>{
     this.playing = false
     this.randomiseNext = false
@@ -82,7 +85,7 @@ class CompositionRow {
     this.tiles = []
     this.row = row
     this.randomise()
-    this.position = 0
+    // this.position = 0
     this.synth = new Tone.Synth({
       oscillator: {
         type: "sine"
@@ -110,6 +113,7 @@ class CompositionTile {
     this.note = 0
     this.row = row
     this.col = col
+    this.isPlaying = false
     randomise && this.randomise()
   }
   change(){

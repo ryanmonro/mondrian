@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Tone from 'tone'
 import './Tile.scss';
 
 const colours = [
@@ -12,18 +11,6 @@ const colours = [
 ]
 
 export default class Tile extends Component {
-  isPlaying(){
-    const {tile, composition} = this.props
-    const ticksPerBar = Tone.Transport.PPQ * 4
-    const transport = Tone.Transport.ticks % ticksPerBar
-    const cols = composition.rows[tile.row].tiles.length
-    const position = Math.floor(transport * cols / ticksPerBar)
-    const playing = Tone.Transport.state === "started"
-    if (tile.note === 0 || !playing) return false 
-    const result = position >= tile.col && 
-      position <= (tile.col + 1) 
-    return result
-  }
   render(){
     let {tile, updateComposition, width} = this.props
     const colour = colours[tile.note]
@@ -33,10 +20,9 @@ export default class Tile extends Component {
       <div className="Tile"
         style={{ width: width, background: colour }}
           onClick={onClick}
-          
       >
         <div 
-          className={this.isPlaying() ? "TileFlasher playing" : "TileFlasher"} >
+          className={tile.isPlaying ? "TileFlasher playing" : "TileFlasher"} >
         </div>
       </div>
     )

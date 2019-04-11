@@ -16,13 +16,13 @@ class App extends Component {
       play: () => {
         Tone.Transport.scheduleRepeat((time)=>{
           this.state.updateComposition((c)=>{
-            c.play(time)
+            c.playAtPosition(time)
           })
         }, "1i")
         Tone.start()
         Tone.Transport.start("+0.2")
         this.state.updateComposition((c)=>{
-          c.playing = true
+          c.play()
         })
       },
       stop: () => {
