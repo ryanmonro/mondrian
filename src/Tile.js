@@ -26,13 +26,13 @@ export default class Tile extends Component {
     const onClick = () => updateComposition((composition)=>{
               composition.change(tile.row, tile.col)})
     return (
-      <div className={this.isPlaying() ? "Tile playing" : "Tile"}
-        style={{ width: width }}
+      <div className="Tile"
+        style={{ width: width, background: colour }}
+          onClick={onClick}
+          
       >
         <div 
-          className="TileInner" 
-          onClick={onClick}
-          style={{ background: colour }}>
+          className={this.isPlaying() ? "TileInner playing" : "TileInner"} >
         </div>
       </div>
     )

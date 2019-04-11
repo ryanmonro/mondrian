@@ -1,16 +1,19 @@
-.TileInner {
-  height: 100%;
-}
-
 .Tile {
   height: 100%;
   box-sizing: border-box;
   float:left;
   border: 5px solid #212121;
+}
+
+.TileInner {
+  height: 100%;
   &.playing {
-    padding: 2px;
-    @media (max-width: 600px) {
-      padding: 1px;
-    }
+    animation-name: example;
+    animation-duration: 1s;
   }
+}
+
+@keyframes example {
+  0%   {background-color: rgba(255, 255, 255, 0.5); }
+  100% {background-color: rgba(255, 255, 255, 0); }
 }
