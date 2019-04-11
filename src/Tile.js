@@ -32,7 +32,7 @@ export default class Tile extends Component {
           
       >
         <div 
-          className={this.isPlaying() ? "TileInner playing" : "TileInner"} >
+          className={this.isPlaying() ? "TileFlasher playing" : "TileFlasher"} >
         </div>
       </div>
     )

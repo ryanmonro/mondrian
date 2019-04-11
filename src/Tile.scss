@@ -5,15 +5,15 @@
   border: 5px solid #212121;
 }
 
-.TileInner {
+.TileFlasher {
   height: 100%;
   &.playing {
-    animation-name: example;
+    animation-name: tileFlash;
     animation-duration: 1s;
   }
 }
 
-@keyframes example {
+@keyframes tileFlash {
   0%   {background-color: rgba(255, 255, 255, 0.5); }
   100% {background-color: rgba(255, 255, 255, 0); }
 }
