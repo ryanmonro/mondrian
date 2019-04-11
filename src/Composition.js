@@ -11,8 +11,8 @@ const SUBDIVS = [2,3,4,5,6,8]
 
 class Composition {
   constructor(){
-    this.position = 0
     this.playing = false
+    this.rows = []
     this.randomiseNext = false
     this.randomise()
   }
@@ -20,31 +20,29 @@ class Composition {
     this.rows[row].tiles[col].change()
   }
   play = (time)=>{
-      for(const row of this.rows){
-        let newPos = Math.floor((this.position / 100) * row.tiles.length)
-        if (row.position !== newPos) {
-          row.position = newPos
-          if (row.position === row.tiles.length) {
-            row.position = 0
-          }
-          const note = NOTES[row.tiles[row.position].note]
-          if(note !== 0){
-            row.synth.triggerAttackRelease(note + (row.row + 2).toString(), "32n", time)
-          }
+    const ticksPerBar = Tone.Transport.PPQ * 4
+    const transport = Tone.Transport.ticks % ticksPerBar
+    for(const row of this.rows){
+      let newPos = Math.floor(transport * row.tiles.length / ticksPerBar)
+      if (row.position !== newPos) {
+        row.position = newPos
+        if (row.position === row.tiles.length) {
+          row.position = 0
+        }
+        const note = NOTES[row.tiles[row.position].note]
+        if(note !== 0){
+          row.synth.triggerAttackRelease(note + (row.row + 2).toString(), "32n", time)
         }
       }
-      if (this.position >= 100) {
-        this.position = 1
-        if (this.randomiseNext === true){
-          this.randomiseRows()
-          this.randomiseNext = false
-        }
-      } else {
-        this.position += (100 / (24 * 4))
-      }
+    }
+    if (transport === ticksPerBar - 1 && this.randomiseNext === true){
+      this.randomiseRows()
+    }
   }
+  // play = ()=>{
+  //   this.playing = true
+  // }
   stop = ()=>{
-    this.position = 0
     this.playing = false
     this.randomiseNext = false
   }

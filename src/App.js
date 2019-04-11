@@ -5,6 +5,9 @@ import Composition from './Composition'
 import Board from './Board'
 import Controls from './Controls'
 
+const PPQ = 24
+const BPM = 60
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -12,24 +15,21 @@ class App extends Component {
       composition: new Composition(),
       play: () => {
         Tone.Transport.scheduleRepeat((time)=>{
-          this.state.updateComposition((composition)=>{
-            composition.play(time)
+          this.state.updateComposition((c)=>{
+            c.play(time)
           })
         }, "1i")
-        Tone.Transport.start("+0.2")
         Tone.start()
-        this.state.updateComposition((composition)=>{
-          composition.playing = true
-          composition.position = 1
+        Tone.Transport.start("+0.2")
+        this.state.updateComposition((c)=>{
+          c.playing = true
         })
       },
       stop: () => {
         Tone.Transport.stop()
         Tone.Transport.cancel()
-        this.state.updateComposition((composition)=>{
-          composition.position = 0
-          composition.playing = false
-          composition.randomiseNext = false
+        this.state.updateComposition((c)=>{
+          c.stop()
         })
       },
       updateComposition: (fn) => {
@@ -48,8 +48,8 @@ class App extends Component {
 
   }
   componentDidMount(){
-    Tone.Transport.PPQ = 24
-    Tone.Transport.bpm.value = 60
+    Tone.Transport.PPQ = PPQ
+    Tone.Transport.bpm.value = BPM
     this.updateWindowDimensions()
     window.addEventListener("resize", this.updateWindowDimensions);
   }

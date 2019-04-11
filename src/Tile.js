@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Tone from 'tone'
 import './Tile.scss';
 
 const colours = [
@@ -13,11 +14,14 @@ const colours = [
 export default class Tile extends Component {
   isPlaying(){
     const {tile, composition} = this.props
-    const position = composition.position
+    const ticksPerBar = Tone.Transport.PPQ * 4
+    const transport = Tone.Transport.ticks % ticksPerBar
     const cols = composition.rows[tile.row].tiles.length
-    const percent = position / 100
-    if (tile.note === 0 || position === 0) return false 
-    const result = percent >= tile.col / cols && percent <= (tile.col + 1) / cols
+    const position = Math.floor(transport * cols / ticksPerBar)
+    const playing = Tone.Transport.state === "started"
+    if (tile.note === 0 || !playing) return false 
+    const result = position >= tile.col && 
+      position <= (tile.col + 1) 
     return result
   }
   render(){
