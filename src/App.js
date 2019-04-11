@@ -5,15 +5,15 @@ import Composition from './Composition'
 import Board from './Board'
 import Controls from './Controls'
 
-const PPQ = 24
-const BPM = 60
+Tone.Transport.PPQ = 24
+Tone.Transport.bpm.value = 60
 
 class App extends Component {
   constructor(props){
     super(props)
     this.state = {
       composition: new Composition(),
-      synths: [],
+      synth: new Tone.PolySynth(8, Tone.Synth).toMaster(),
       play: () => {
         Tone.Transport.scheduleRepeat((time)=>{
           const ticksPerBar = Tone.Transport.PPQ * 4
@@ -21,8 +21,7 @@ class App extends Component {
           const c = this.state.composition
           const tiles = c.playAtPosition(position, ticksPerBar)
           for(const tile of tiles){
-            const synth = this.state.synths[tile.row]
-            synth.triggerAttackRelease(tile.midiNote(), "32n", time)
+            this.state.synth.triggerAttackRelease(tile.midiNote(), "32n", time)
           }
           this.setState((prevState)=>{
             return {composition: c}
@@ -58,20 +57,13 @@ class App extends Component {
 
   }
   componentDidMount(){
-    Tone.Transport.PPQ = PPQ
-    Tone.Transport.bpm.value = BPM
     this.updateWindowDimensions()
     window.addEventListener("resize", this.updateWindowDimensions)
-    let synths = []
-    for(let s = 0; s < 8; s++){
-      synths.push(new Tone.Synth({
-        oscillator: {
-          type: "sine"
-        },
-        volume: -12
-      }).toMaster())
-    }
-    this.setState({synths: synths})
+    const synth = this.state.synth
+    synth.set("oscillator", {"type": "sine"})
+    synth.set("volume", -12)
+    synth.set("envelope", {"attack": .015, "release": 1})
+    this.setState({synth: synth})
   }
   render() {
     return (
