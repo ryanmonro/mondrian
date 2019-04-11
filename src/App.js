@@ -16,13 +16,18 @@ class App extends Component {
       synths: [],
       play: () => {
         Tone.Transport.scheduleRepeat((time)=>{
-          this.state.updateComposition((c)=>{
-            const tiles = c.playAtPosition(time)
-            for(const tile of tiles){
-              const synth = this.state.synths[tile.row]
-              synth.triggerAttackRelease(tile.midiNote(), "32n", time)
-            }
+          const ticksPerBar = Tone.Transport.PPQ * 4
+          const position = Tone.Transport.ticks % ticksPerBar
+          const c = this.state.composition
+          const tiles = c.playAtPosition(position, ticksPerBar)
+          for(const tile of tiles){
+            const synth = this.state.synths[tile.row]
+            synth.triggerAttackRelease(tile.midiNote(), "32n", time)
+          }
+          this.setState((prevState)=>{
+            return {composition: c}
           })
+          
         }, "1i")
         Tone.start()
         Tone.Transport.start("+0.2")
@@ -56,7 +61,7 @@ class App extends Component {
     Tone.Transport.PPQ = PPQ
     Tone.Transport.bpm.value = BPM
     this.updateWindowDimensions()
-    window.addEventListener("resize", this.updateWindowDimensions);
+    window.addEventListener("resize", this.updateWindowDimensions)
     let synths = []
     for(let s = 0; s < 8; s++){
       synths.push(new Tone.Synth({
@@ -78,4 +83,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

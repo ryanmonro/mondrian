@@ -1,5 +1,3 @@
-import Tone from 'tone'
-
 const MINROWS = 2
 const MAXROWS = 6
 const MINWIDTH = 1
@@ -19,15 +17,13 @@ class Composition {
   change(row, col){
     this.rows[row].tiles[col].change()
   }
-  playAtPosition = (time)=>{
+  playAtPosition = (current, total)=>{
     let tiles = []
-    const ticksPerBar = Tone.Transport.PPQ * 4
-    const transport = Tone.Transport.ticks % ticksPerBar
     for(const row of this.rows){
-      let newPos = Math.floor(transport * row.tiles.length / ticksPerBar)
+      let playingTile = Math.floor(current * row.tiles.length / total)
       for(const tile of row.tiles){
         const note = NOTES[tile.note]
-        if (note !== 0 && tile.col === newPos) {
+        if (note !== 0 && tile.col === playingTile) {
           if (!tile.isPlaying) {
             tile.isPlaying = true
             tiles.push(tile)
@@ -37,7 +33,7 @@ class Composition {
         }
       }
     }
-    if (transport === ticksPerBar - 1 && this.randomiseNext === true){
+    if (current === total - 1 && this.randomiseNext === true){
       this.randomiseRows()
     }
     return tiles
