@@ -1,13 +1,13 @@
 {
-  "main.css": "/mondrian/static/css/main.b951af5f.chunk.css",
-  "main.js": "/mondrian/static/js/main.9e997692.chunk.js",
-  "main.js.map": "/mondrian/static/js/main.9e997692.chunk.js.map",
+  "main.css": "/mondrian/static/css/main.0811fd41.chunk.css",
+  "main.js": "/mondrian/static/js/main.6d1f4546.chunk.js",
+  "main.js.map": "/mondrian/static/js/main.6d1f4546.chunk.js.map",
   "runtime~main.js": "/mondrian/static/js/runtime~main.5e2da56a.js",
   "runtime~main.js.map": "/mondrian/static/js/runtime~main.5e2da56a.js.map",
-  "static/js/2.84e15905.chunk.js": "/mondrian/static/js/2.84e15905.chunk.js",
-  "static/js/2.84e15905.chunk.js.map": "/mondrian/static/js/2.84e15905.chunk.js.map",
+  "static/js/2.8dcf1343.chunk.js": "/mondrian/static/js/2.8dcf1343.chunk.js",
+  "static/js/2.8dcf1343.chunk.js.map": "/mondrian/static/js/2.8dcf1343.chunk.js.map",
   "index.html": "/mondrian/index.html",
-  "precache-manifest.4f6c4de190973e46aa77ac486b74046c.js": "/mondrian/precache-manifest.4f6c4de190973e46aa77ac486b74046c.js",
+  "precache-manifest.f99c561e2c17868b3a733115b7e7c00c.js": "/mondrian/precache-manifest.f99c561e2c17868b3a733115b7e7c00c.js",
   "service-worker.js": "/mondrian/service-worker.js",
-  "static/css/main.b951af5f.chunk.css.map": "/mondrian/static/css/main.b951af5f.chunk.css.map"
+  "static/css/main.0811fd41.chunk.css.map": "/mondrian/static/css/main.0811fd41.chunk.css.map"
 }
