@@ -3,6 +3,9 @@
   box-sizing: border-box;
   float:left;
   border: 5px solid #212121;
+  @media (max-width: 600px) {
+    border: 3px solid #212121;
+  }
 }
 
 .TileFlasher {

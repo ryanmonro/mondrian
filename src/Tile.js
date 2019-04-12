@@ -7,13 +7,16 @@ const colours = [
   "#FCD318", // yellow
   "#344D90", // blue
   "#A3A3A3", // grey
+  // "#548417", // green
   "#212121" // black
 ]
 
 export default class Tile extends Component {
   render(){
-    let {tile, updateComposition, width} = this.props
+    let {tile, composition, updateComposition} = this.props
     const colour = colours[tile.note]
+    const row = composition.rows[tile.row]
+    const width = (100 / row.tiles.length).toString() + "%"
     const onClick = () => updateComposition((composition)=>{
               composition.change(tile.row, tile.col)})
     return (

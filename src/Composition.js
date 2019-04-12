@@ -1,11 +1,11 @@
-const MINROWS = 2
+const MINROWS = 1
 const MAXROWS = 6
 const MINWIDTH = 1
 const MAXWIDTH = 9
-const CHANCEOFREST = 0.5
+const CHANCEOFREST = 0.4
 const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
 const SUBDIVS = [2,3,4,5,6,8]
-// const INITIALROWS = 4
+const INITIALROWS = 4
 
 class Composition {
   constructor(){
@@ -55,7 +55,7 @@ class Composition {
   randomiseRows = ()=>{
     this.rows = []
     this.randomiseNext = false
-    let numberOfRows = 1 + Math.ceil(Math.random() * 3)
+    let numberOfRows = INITIALROWS
     for(let i = 0; i < numberOfRows; i++){
       this.addRow()
     }
@@ -72,6 +72,12 @@ class Composition {
   }
   subtractTileFromRow(row){
     this.rows[row].subtractTile()
+  }
+  rowsAddable(){
+    return this.rows.length < MAXROWS
+  }
+  rowsSubtractable(){
+    return this.rows.length > MINROWS
   }
 }
 
@@ -93,6 +99,12 @@ class CompositionRow {
   }
   subtractTile(){
     this.tiles.length > MINWIDTH && this.tiles.pop()
+  }
+  tilesAddable(){
+    return this.tiles.length < MAXWIDTH
+  }
+  tilesSubtractable(){
+    return this.tiles.length > MINWIDTH
   }
 }
 

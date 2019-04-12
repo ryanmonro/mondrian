@@ -50,19 +50,24 @@ class App extends Component {
     }
   }
   updateWindowDimensions = () => {
-    const desktop = window.innerWidth > 600
-    const boardHeight = desktop ? window.innerHeight - 160 : 
-      window.innerHeight - 110
-    this.setState({boardHeight: boardHeight, desktop: desktop})
+    const windowWidth = window.innerWidth
+    const windowHeight = window.innerHeight
+    const desktop = windowWidth > 600
+    const boardHeight = windowHeight - 64 
+    const boardSize = boardHeight < windowWidth ? boardHeight : windowWidth
+    this.setState({boardSize: boardSize, window: {height: windowHeight, width: windowWidth}, desktop: desktop})
+
+  }
+  componentWillMount(){
+    this.updateWindowDimensions()
+    window.addEventListener("resize", this.updateWindowDimensions)
 
   }
   componentDidMount(){
-    this.updateWindowDimensions()
-    window.addEventListener("resize", this.updateWindowDimensions)
     const synth = this.state.synth
     synth.set("oscillator", {"type": "sine"})
     synth.set("volume", -12)
-    synth.set("envelope", {"attack": .015, "release": 1})
+    synth.set("envelope", {"attack": .02, "release": 2})
     this.setState({synth: synth})
   }
   render() {

@@ -6,30 +6,32 @@ import './Row.scss'
 
 export default class Row extends Component {
   render(){
-    let {row, height, composition, updateComposition} = this.props
+    let {row, composition, updateComposition, desktop, boardSize} = this.props
+    const borderWidth = desktop ? 5 : 3
+    const height = ((boardSize - 80 - (2 * borderWidth)) / composition.rows.length).toString() + "px"
     const style = {
       height: height,
-      borderTop: row.row === 0 ? "5px solid #212121" : "",
-      borderBottom: row.row === (composition.rows.length - 1) ? "5px solid #212121" : ""
+      borderTop: row.row === 0 ? borderWidth + "px solid #212121" : "",
+      borderBottom: row.row === (composition.rows.length - 1) ? borderWidth + "px solid #212121" : "",
+      // width: this.props.boardSize.toString() + "px"
     }
     const addRow = () => updateComposition((composition)=>{
               composition.addRow()})
     const subtractRow = () => updateComposition((composition)=>{
               composition.subtractRow()})
     return (
-      <div className="RowOuter">
-        <RowButton {...this.props} add={false} height={height}/>
+      <div className="Row">
+        <RowButton {...this.props} add={false} height={height}
+          enabled={row.tilesSubtractable()}/>
         <Swipeable onSwipeRight={subtractRow} onSwipeLeft={addRow} >
-          <div className="Row" style={style}>
+          <div className="RowInner" style={style}>
             { row.tiles.map((v, k) => 
-              <Tile {...this.props} tile={v} key={k} 
-                width={(100 / row.tiles.length).toString() + "%"}
-              />
-              ) 
+              <Tile {...this.props} tile={v} key={k} /> )
             }
           </div>
         </Swipeable>
-        <RowButton {...this.props} add={true} height={height}/>
+        <RowButton {...this.props} add={true} height={height}
+          enabled={row.tilesAddable()}/>
       </div>
     )
   }

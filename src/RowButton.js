@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 export default class RowButton extends Component {
   render(){
-    const {desktop, long, add, row, height, updateComposition} = this.props
+    const {desktop, long, add, row, height, enabled, updateComposition} = this.props
     const addTile = () => updateComposition((composition)=>{
               composition.addTileToRow(row.row)})
     const subtractTile = () => updateComposition((composition)=>{
@@ -11,20 +11,19 @@ export default class RowButton extends Component {
               composition.addRow()})
     const subtractRow = () => updateComposition((composition)=>{
               composition.subtractRow()})
-    let className = "rowButton", outerClassName = "rowButtonOuter"
-    let onClick = add ? addTile : subtractTile
+    console.log(enabled)
+    const style = enabled ? {lineHeight: height} : { opacity: 0, cursor: "default" }
+    let className = "rowButton"
+    let onClick = (add ? addTile : subtractTile)
     if (long) {
       className += " long"
-      outerClassName = "longButtonOuter"
       onClick = add ? addRow : subtractRow
     }
     className +=  add ? " add" : " subtract"
     const text = add ? "+" : "–"
     return (
-      <div className={outerClassName}>
-        <div className={className} onClick={desktop ? onClick : undefined}
-            style={{ lineHeight: height }}>{text}</div>
-      </div>
+        <div className={className} onClick={desktop && enabled ? onClick : undefined}
+            style={style}>{text}</div>
     )
   }
 }

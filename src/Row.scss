@@ -1,13 +1,17 @@
-.Row {
+.RowInner {
   overflow: hidden;
   margin: 0 auto;
   flex: 1;
   background: #212121;
   border-left: 5px solid #212121;
   border-right: 5px solid #212121;
+  @media (max-width: 600px) {
+    border-left: 3px solid #212121;
+    border-right: 3px solid #212121;
+  }
 }
 
-.RowOuter {
+.Row {
   display: flex;
   width: 100%;
 }
@@ -26,7 +30,6 @@
   font-family: Helvetica;
   font-weight: 500px;
   font-size: 20px;
-  line-height: 200px;
   user-select: none;
   color: white;
   &.add {
