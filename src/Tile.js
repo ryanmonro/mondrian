@@ -13,7 +13,7 @@ const colours = [
 
 export default class Tile extends Component {
   render(){
-    let {tile, composition, updateComposition} = this.props
+    const {tile, composition, updateComposition} = this.props
     const colour = colours[tile.note]
     const row = composition.rows[tile.row]
     const width = (100 / row.tiles.length).toString() + "%"

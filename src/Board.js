@@ -6,7 +6,8 @@ import './Board.scss';
 
 export default class Board extends Component {
   render(){
-    let {composition, boardSize, updateComposition} = this.props
+    const {composition, boardSize, updateComposition} = this.props
+    
     const size = boardSize.toString() + "px"
     const addRow = () => updateComposition((c)=>{
               c.addRow()})

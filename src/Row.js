@@ -6,7 +6,7 @@ import './Row.scss'
 
 export default class Row extends Component {
   render(){
-    let {row, composition, updateComposition, desktop, boardSize} = this.props
+    const {row, composition, updateComposition, desktop, boardSize} = this.props
     const borderWidth = desktop ? 5 : 3
     const height = ((boardSize - 80 - (2 * borderWidth)) / composition.rows.length).toString() + "px"
     const style = {
