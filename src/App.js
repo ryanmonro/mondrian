@@ -17,9 +17,9 @@ class App extends Component {
       play: () => {
         Tone.Transport.scheduleRepeat((time)=>{
           const ticksPerBar = Tone.Transport.PPQ * 4
-          const position = Tone.Transport.ticks % ticksPerBar
+          const position = (Tone.Transport.ticks) % ticksPerBar
           const c = this.state.composition
-          const tiles = c.playAtPosition(position, ticksPerBar)
+          const tiles = c.tilesToPlayAtPosition(position, ticksPerBar)
           for(const tile of tiles){
             this.state.synth.triggerAttackRelease(tile.midiNote(), "32n", time)
           }
@@ -29,7 +29,7 @@ class App extends Component {
           
         }, "1i")
         Tone.start()
-        Tone.Transport.start("+0.2")
+        Tone.Transport.start("+0.1")
         this.state.updateComposition((c)=>{
           c.play()
         })
@@ -50,6 +50,8 @@ class App extends Component {
     }
   }
   updateWindowDimensions = () => {
+    // calc border size here - then it can change everywhere
+    // get it out of of CSS too, that helps nobody
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
     const desktop = windowWidth > 600

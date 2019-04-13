@@ -12,26 +12,41 @@ class Composition {
     this.playing = false
     this.rows = []
     this.randomiseNext = false
+    this.firstBar = true // to ensure first note of first bar gets played
     this.randomise()
   }
   change(row, col){
     this.rows[row].tiles[col].change()
   }
-  playAtPosition = (current, total)=>{
-    let tiles = []
+  tilesToPlayAtPosition = (current, total)=>{
+    const tiles = []
     for(const row of this.rows){
-      let playingTile = Math.floor(current * row.tiles.length / total)
+      const tileCount = row.tiles.length
       for(const tile of row.tiles){
         const note = NOTES[tile.note]
-        if (note !== 0 && tile.col === playingTile) {
+        const tileStartPosition = Math.ceil(tile.col * total / tileCount)
+        const nextTileStartPosition = Math.ceil((tile.col + 1) * total / tileCount)
+        const playNow = current === tileStartPosition
+        const isPlaying = current >= tileStartPosition &&
+          current < nextTileStartPosition
+        if (note !== 0 && isPlaying) {
           if (!tile.isPlaying) {
             tile.isPlaying = true
-            tiles.push(tile)
+            if (playNow || (this.firstBar === true && tile.col === 0)) {
+              tile.playNow = true
+              tiles.push(tile)
+            } else {
+              tile.playNow = false
+            }
           }
         } else {
           tile.isPlaying = false
+          tile.playNow = false
         }
       }
+    }
+    if (this.firstBar === true && current === total - 1) {
+      this.firstBar = false
     }
     if (current === total - 1 && this.randomiseNext === true){
       this.randomiseRows()
@@ -40,6 +55,7 @@ class Composition {
   }
   play = ()=>{
     this.playing = true
+    this.firstBar = true
   }
   stop = ()=>{
     this.playing = false
@@ -115,6 +131,7 @@ class CompositionTile {
     this.row = row
     this.col = col
     this.isPlaying = false
+    this.playNow = false
     randomise && this.randomise()
   }
   change(){
