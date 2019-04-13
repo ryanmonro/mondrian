@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import PlayArrowIcon from '@material-ui/icons/PlayArrow'
 import StopIcon from '@material-ui/icons/Stop'
 import ShuffleIcon from '@material-ui/icons/Shuffle'
+import HelpOutlineIcon from '@material-ui/icons/HelpOutline'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 
@@ -18,7 +19,7 @@ const theme = createMuiTheme({
 
 class Controls extends Component {
   render(){
-    const {composition, play, stop, updateComposition} = this.props
+    const {composition, play, stop, updateComposition, openModal} = this.props
     const buttonStyle = {margin: '5px', float: 'left'}
     const randomise = () => updateComposition((composition) => {
       composition.randomise()
@@ -30,6 +31,7 @@ class Controls extends Component {
         <Button variant="contained" onClick={play} disabled={composition.playing} style={buttonStyle}><PlayArrowIcon /></Button>
         <Button variant="contained" onClick={stop} disabled={!composition.playing} style={buttonStyle}><StopIcon /></Button>
         <Button variant="contained" onClick={randomise} disabled={composition.randomiseNext} style={buttonStyle}><ShuffleIcon /></Button>
+        <Button variant="contained" onClick={openModal} style={buttonStyle}><HelpOutlineIcon /></Button>
         </Toolbar>
         </AppBar>
       </MuiThemeProvider>

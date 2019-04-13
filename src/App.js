@@ -4,6 +4,8 @@ import Tone from 'tone'
 import Composition from './Composition'
 import Board from './Board'
 import Controls from './Controls'
+import AboutModal from './AboutModal'
+
 
 Tone.Transport.PPQ = 24
 Tone.Transport.bpm.value = 60
@@ -12,6 +14,9 @@ class App extends Component {
   constructor(props){
     super(props)
     this.state = {
+      modalOpen: false,
+      openModal: ()=> this.setState({modalOpen: true}),
+      closeModal: ()=> this.setState({modalOpen: false}),
       composition: new Composition(),
       synth: new Tone.PolySynth(8, Tone.Synth).toMaster(),
       play: () => {
@@ -29,7 +34,8 @@ class App extends Component {
           
         }, "1i")
         Tone.start()
-        Tone.Transport.start("+0.1")
+        Tone.context.latencyHint = "interactive"
+        Tone.Transport.start()
         this.state.updateComposition((c)=>{
           c.play()
         })
@@ -77,13 +83,14 @@ class App extends Component {
     const synth = this.state.synth
     synth.set("oscillator", {"type": "sine"})
     synth.set("volume", -12)
-    synth.set("envelope", {"attack": .02, "release": 2})
+    synth.set("envelope", {"attack": .015, "release": 2})
     this.setState({synth: synth})
   }
   render() {
     return (
       <div className="App">
         <Controls {...this.state} />
+        <AboutModal {...this.state} />
         <Board {...this.state} />
       </div>
     )
