@@ -1,18 +1,14 @@
-.RowInner {
-  overflow: hidden;
-  margin: 0 auto;
-  flex: 1;
-  background: #212121;
-}
-
 .Row {
   display: flex;
   align-items: center;
   width: 100%;
 }
 
-.longButtonOuter {
-  width: 100%;
+.RowInner {
+  overflow: hidden;
+  margin: 0 auto;
+  flex: 1;
+  background: #212121;
 }
 
 .compButton {
@@ -25,36 +21,7 @@
   font-weight: 500px;
   user-select: none;
   color: white;
-  // width: 40px;
-  // font-size: 20px;
-  // &.add {
-  //   border-radius: 0px 10px 10px 0px;
-  //   &.long{
-  //     border-radius: 0px 0px 10px 10px;
-  //   }
-  // }
-  // &.subtract {
-  //   border-radius: 10px 0px 0px 10px;
-  //   &.long{
-  //     border-radius: 10px 10px 0px 0px;
-  //   }
-  // }
-  &.board {
-    // width: initial;
-    display: block;
-    // margin: 0 40px 0 40px;
-    // height: 40px;
-    // line-height: 40px;
-  }
-  @media (max-width: 600px) {
-    font-size: 15px;
-    // width: 20px;
-    // &.long {
-      // height: 20px;
-      // line-height: 20px;
-      // margin: 0 20px 0 20px;
-    // }
-  }
+  font-size: 20px;
   @media (min-width: 601px){
     &:hover {
       opacity: 1;
