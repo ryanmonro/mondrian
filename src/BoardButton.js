@@ -15,7 +15,7 @@ export default class BoardButton extends Component {
       lineHeight: buttonSize + "px", 
       height: buttonSize + "px",
       margin: "0 " + buttonSize + "px",
-      borderRadius: add ? "0 0 10px 10px" : "10px 10px 0 0"
+      borderRadius: add ? "10px 10px 0 0" : "0 0 10px 10px"
     } 
     let onClick = add ? addRow : subtractRow
     const text = add ? "+" : "–"

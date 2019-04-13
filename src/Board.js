@@ -14,15 +14,15 @@ export default class Board extends Component {
               c.subtractRow()})
     return (
       <div className="Board" style={{ width: size, height: size }}>
-        <BoardButton {...this.props} add={false} />
-        <Swipeable onSwipeUp={addRow} onSwipeDown={subtractRow} >
+        <BoardButton {...this.props} add={true} />
+        <Swipeable onSwipeUp={subtractRow} onSwipeDown={addRow} >
           <div className="BoardInner">
-            { composition.rows.map((v, k) => 
+            { composition.rows.slice().reverse().map((v, k) => 
               <Row {...this.props} key={k} row={v} /> )
             }
           </div>
         </Swipeable>
-        <BoardButton {...this.props} add={true} />
+        <BoardButton {...this.props} add={false} />
       </div>
     )
   }

@@ -10,8 +10,8 @@ export default class Row extends Component {
     const height = ((boardSize - (2 * buttonSize) - (2 * border.value)) / composition.rows.length)
     const style = {
       height: height + "px",
-      borderTop: row.row === 0 ? border.string : "",
-      borderBottom: row.row === (composition.rows.length - 1) ? border.string : "",
+      borderBottom: row.row === 0 ? border.string : "",
+      borderTop: row.row === (composition.rows.length - 1) ? border.string : "",
       borderLeft: border.string,
       borderRight: border.string
     }
