@@ -6,7 +6,6 @@ import Board from './Board'
 import Controls from './Controls'
 import AboutModal from './AboutModal'
 
-
 Tone.Transport.PPQ = 24
 Tone.Transport.bpm.value = 60
 

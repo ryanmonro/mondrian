@@ -12,7 +12,7 @@ class Composition {
     this.playing = false
     this.rows = []
     this.randomiseNext = false
-    this.firstBar = true // to ensure first note of first bar gets played
+    this.firstBar = true
     this.randomise()
   }
   change(row, col){
@@ -20,6 +20,7 @@ class Composition {
   }
   tilesToPlayAtPosition = (current, total)=>{
     const tiles = []
+    const lastStep = current === total - 1
     for(const row of this.rows){
       const tileCount = row.tiles.length
       for(const tile of row.tiles){
@@ -32,24 +33,19 @@ class Composition {
         if (note !== 0 && isPlaying) {
           if (!tile.isPlaying) {
             tile.isPlaying = true
+            // to ensure the first note gets played
             if (playNow || (this.firstBar === true && tile.col === 0)) {
-              tile.playNow = true
               tiles.push(tile)
-            } else {
-              tile.playNow = false
             }
           }
         } else {
           tile.isPlaying = false
-          tile.playNow = false
         }
       }
     }
-    if (this.firstBar === true && current === total - 1) {
-      this.firstBar = false
-    }
-    if (current === total - 1 && this.randomiseNext === true){
-      this.randomiseRows()
+    if (lastStep) {
+      if (this.firstBar === true ) this.firstBar = false
+      if (this.randomiseNext === true) this.randomiseRows()
     }
     return tiles
   }
@@ -77,8 +73,7 @@ class Composition {
     }
   }
   addRow(){
-    // currently adds a random row. Should it?
-    this.rows.length < MAXROWS && this.rows.push(new CompositionRow(this, this.rows.length))
+    this.rows.length < MAXROWS && this.rows.push(new CompositionRow(this.rows.length))
   }
   subtractRow(){
     this.rows.length > MINROWS && this.rows.pop()
@@ -98,8 +93,7 @@ class Composition {
 }
 
 class CompositionRow {
-  constructor(composition, row){
-    this.composition = composition
+  constructor(row){
     this.tiles = []
     this.row = row
     this.randomise()
@@ -107,11 +101,11 @@ class CompositionRow {
   randomise(){
     let numberOfTiles = SUBDIVS[Math.floor(Math.random() * SUBDIVS.length)]
     for(let i = 0; i < numberOfTiles; i++){
-      this.tiles.push(new CompositionTile(this.composition, this.row, this.tiles.length, true))
+      this.addTile(true)
     }
   }
-  addTile(){
-    this.tiles.length < MAXWIDTH && this.tiles.push(new CompositionTile(this.composition, this.row, this.tiles.length))
+  addTile(random = false){
+    this.tiles.length < MAXWIDTH && this.tiles.push(new CompositionTile(this.row, this.tiles.length, random))
   }
   subtractTile(){
     this.tiles.length > MINWIDTH && this.tiles.pop()
@@ -125,13 +119,11 @@ class CompositionRow {
 }
 
 class CompositionTile {
-  constructor(composition, row, col, randomise=false){
-    this.composition = composition
+  constructor(row, col, randomise=false){
     this.note = 0
     this.row = row
     this.col = col
     this.isPlaying = false
-    this.playNow = false
     randomise && this.randomise()
   }
   change(){
