@@ -13,15 +13,15 @@ const colours = [
 
 export default class Tile extends Component {
   render(){
-    const {tile, composition, updateComposition} = this.props
+    const {tile, composition, updateComposition, border} = this.props
     const colour = colours[tile.note]
     const row = composition.rows[tile.row]
-    const width = (100 / row.tiles.length).toString() + "%"
+    const width = (100 / row.tiles.length) + "%"
     const onClick = () => updateComposition((composition)=>{
               composition.change(tile.row, tile.col)})
     return (
       <div className="Tile"
-        style={{ width: width, background: colour }}
+        style={{ width: width, background: colour, border: border.string }}
           onClick={onClick}
       >
         <div 

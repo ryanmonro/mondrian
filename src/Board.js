@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import {Swipeable} from 'react-touch'
 import Row from './Row';
-import RowButton from './RowButton'
+import BoardButton from './BoardButton'
 import './Board.scss';
 
 export default class Board extends Component {
   render(){
     const {composition, boardSize, updateComposition} = this.props
-    
     const size = boardSize.toString() + "px"
     const addRow = () => updateComposition((c)=>{
               c.addRow()})
@@ -15,7 +14,7 @@ export default class Board extends Component {
               c.subtractRow()})
     return (
       <div className="Board" style={{ width: size, height: size }}>
-        <RowButton {...this.props} long={true} add={false} />
+        <BoardButton {...this.props} add={false} />
         <Swipeable onSwipeUp={addRow} onSwipeDown={subtractRow} >
           <div className="BoardInner">
             { composition.rows.map((v, k) => 
@@ -23,7 +22,7 @@ export default class Board extends Component {
             }
           </div>
         </Swipeable>
-        <RowButton {...this.props} long={true} add={true} />
+        <BoardButton {...this.props} add={true} />
       </div>
     )
   }

@@ -3,12 +3,6 @@
   margin: 0 auto;
   flex: 1;
   background: #212121;
-  border-left: 5px solid #212121;
-  border-right: 5px solid #212121;
-  @media (max-width: 600px) {
-    border-left: 3px solid #212121;
-    border-right: 3px solid #212121;
-  }
 }
 
 .Row {
@@ -21,45 +15,45 @@
   width: 100%;
 }
 
-.rowButton {
+.compButton {
   opacity: 0;
-  width: 40px;
   height: 100%;
   background: #212121;
   border-radius: 10px;
   color: white;
   font-family: Helvetica;
   font-weight: 500px;
-  font-size: 20px;
   user-select: none;
   color: white;
-  &.add {
-    border-radius: 0px 10px 10px 0px;
-    &.long{
-      border-radius: 0px 0px 10px 10px;
-    }
-  }
-  &.subtract {
-    border-radius: 10px 0px 0px 10px;
-    &.long{
-      border-radius: 10px 10px 0px 0px;
-    }
-  }
-  &.long {
-    width: initial;
-    margin: 0 40px 0 40px;
+  // width: 40px;
+  // font-size: 20px;
+  // &.add {
+  //   border-radius: 0px 10px 10px 0px;
+  //   &.long{
+  //     border-radius: 0px 0px 10px 10px;
+  //   }
+  // }
+  // &.subtract {
+  //   border-radius: 10px 0px 0px 10px;
+  //   &.long{
+  //     border-radius: 10px 10px 0px 0px;
+  //   }
+  // }
+  &.board {
+    // width: initial;
     display: block;
-    height: 40px;
-    line-height: 40px;
+    // margin: 0 40px 0 40px;
+    // height: 40px;
+    // line-height: 40px;
   }
   @media (max-width: 600px) {
     font-size: 15px;
-    width: 20px;
-    &.long {
-      height: 20px;
-      line-height: 20px;
-      margin: 0 20px 0 20px;
-    }
+    // width: 20px;
+    // &.long {
+      // height: 20px;
+      // line-height: 20px;
+      // margin: 0 20px 0 20px;
+    // }
   }
   @media (min-width: 601px){
     &:hover {

@@ -57,7 +57,17 @@ class App extends Component {
     const desktop = windowWidth > 600
     const boardHeight = windowHeight - 64 
     const boardSize = boardHeight < windowWidth ? boardHeight : windowWidth
-    this.setState({boardSize: boardSize, window: {height: windowHeight, width: windowWidth}, desktop: desktop})
+    const border = desktop ? 5 : 3
+    this.setState({
+      boardSize: boardSize, 
+      border: {
+        string: border + "px solid #212121",
+        value: border
+      },
+      buttonSize: desktop ? 40 : 20,
+      // window: {height: windowHeight, width: windowWidth}, 
+      desktop: desktop
+    })
 
   }
   componentWillMount(){
