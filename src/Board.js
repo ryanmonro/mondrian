@@ -6,14 +6,14 @@ import './Board.scss';
 
 export default class Board extends Component {
   render(){
-    const {composition, boardSize, updateComposition} = this.props
+    const {composition, boardSize, marginTop, updateComposition} = this.props
     const size = boardSize.toString() + "px"
     const addRow = () => updateComposition((c)=>{
               c.addRow()})
     const subtractRow = () => updateComposition((c)=>{
               c.subtractRow()})
     return (
-      <div className="Board" style={{ width: size, height: size }}>
+      <div className="Board" style={{ width: size, height: size, marginTop: marginTop }}>
         <BoardButton {...this.props} add={true} />
         <Swipeable onSwipeUp={subtractRow} onSwipeDown={addRow} >
           <div className="BoardInner">

@@ -50,14 +50,12 @@ class App extends Component {
     }
   }
   updateWindowDimensions = () => {
-    // calc border size here - then it can change everywhere
-    // get it out of of CSS too, that helps nobody
     const windowWidth = window.innerWidth
     const windowHeight = window.innerHeight
     const desktop = windowWidth > 600
-    const boardHeight = windowHeight - 64 
-    const boardSize = boardHeight < windowWidth ? boardHeight : windowWidth
-    const border = desktop ? 5 : 3
+    const whitespaceHeight = windowHeight - 64 
+    const boardSize = whitespaceHeight < windowWidth ? whitespaceHeight : windowWidth
+    const border = boardSize / 200 // 1% (halved, there are always 2 borders)
     this.setState({
       boardSize: boardSize, 
       border: {
@@ -65,7 +63,7 @@ class App extends Component {
         value: border
       },
       buttonSize: desktop ? 40 : 20,
-      // window: {height: windowHeight, width: windowWidth}, 
+      marginTop: (whitespaceHeight - boardSize) / 2,
       desktop: desktop
     })
 
