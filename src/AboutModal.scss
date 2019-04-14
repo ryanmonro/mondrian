@@ -1,0 +1,24 @@
+.AboutModal {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 10px 5px 15px #212121;
+  justify-content: space-between;
+  top: 100px;
+  margin: 0 auto;
+  height: 320px;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px;
+  outline: none;
+  background: white;
+  text-align: center;
+  &> * {
+    flex: 1;
+  }
+  &.mobile {
+    // max-width: 100%;
+    padding: 15px 5px;
+  }
+}
