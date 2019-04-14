@@ -27,13 +27,15 @@ class App extends Component {
           for(const tile of tiles){
             this.state.synth.triggerAttackRelease(tile.midiNote(), "32n", time)
           }
-          this.setState((prevState)=>{
-            return {composition: c}
-          })
+          if (tiles.length > 0) {
+            console.log('state')
+            this.setState((prevState)=>{
+              return {composition: c}
+            })
+          }
           
         }, "1i")
         Tone.start()
-        // Tone.context.latencyHint = "interactive"
         Tone.Transport.start()
         this.state.updateComposition((c)=>{
           c.play()
@@ -48,6 +50,7 @@ class App extends Component {
       },
       updateComposition: (fn) => {
         this.setState((prevState) => {
+          console.log('state')
           fn(prevState.composition)
           return {composition: prevState.composition}
         })
