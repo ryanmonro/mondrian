@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Toolbar from '@material-ui/core/Toolbar'
-import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -39,8 +38,9 @@ class Controls extends Component {
           style={buttonStyle}
           control={
           <Checkbox
-                checked={composition.playing}
-                onChange={play}
+                checked={composition.auto}
+                color="primary"
+                onChange={()=>updateComposition((c)=>c.toggleAuto())}
                 value="AUTO"
               />
             }

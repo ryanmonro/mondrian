@@ -6,6 +6,7 @@ const CHANCEOFREST = 0.4
 const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
 const SUBDIVS = [2,3,4,5,6,8]
 const INITIALROWS = 4
+const AUTOBARS = 4
 
 class Composition {
   constructor(){
@@ -13,10 +14,15 @@ class Composition {
     this.rows = []
     this.randomiseNext = false
     this.firstBar = true
+    this.auto = true
     this.randomise()
+    this.barCount = 1
   }
   change(row, col){
     this.rows[row].tiles[col].change()
+  }
+  toggleAuto(){
+    this.auto = !this.auto
   }
   tilesToPlayAtPosition = (current, total)=>{
     const tiles = []
@@ -44,8 +50,18 @@ class Composition {
       }
     }
     if (lastStep) {
-      if (this.firstBar === true ) this.firstBar = false
-      if (this.randomiseNext === true) this.randomiseRows()
+      console.log(this.barCount)
+      if (this.firstBar === true ) {
+        this.firstBar = false
+      }
+      if (this.randomiseNext === true) {
+        this.randomiseRows()
+      } else if (this.auto === true) {
+        this.barCount++
+        if (this.barCount >= AUTOBARS) {
+          this.randomiseNext = true
+        }
+      }
     }
     return tiles
   }
@@ -56,6 +72,7 @@ class Composition {
   stop = ()=>{
     this.playing = false
     this.randomiseNext = false
+    this.barCount = 1
   }
   randomise = ()=>{
     if (this.playing === true) {
@@ -67,6 +84,7 @@ class Composition {
   randomiseRows = ()=>{
     this.rows = []
     this.randomiseNext = false
+    this.barCount = 1
     let numberOfRows = INITIALROWS
     for(let i = 0; i < numberOfRows; i++){
       this.addRow()
