@@ -6,8 +6,8 @@ import Board from './Board'
 import Controls from './Controls'
 import AboutModal from './AboutModal'
 
-Tone.Transport.PPQ = 24
-Tone.Transport.bpm.value = 60
+Tone.Transport.PPQ = 12
+Tone.Transport.bpm.value = 90
 
 class App extends Component {
   constructor(props){
@@ -25,7 +25,9 @@ class App extends Component {
           const c = this.state.composition
           const tiles = c.tilesToPlayAtPosition(position, ticksPerBar)
           for(const tile of tiles){
-            this.state.synth.triggerAttackRelease(tile.midiNote(), "32n", time)
+            const duration = 60 * 4 * tile.duration / Tone.Transport.bpm.value / 2
+            console.log(duration)
+            this.state.synth.triggerAttackRelease(tile.midiNote(), duration, time)
           }
           if (tiles.length > 0) {
             console.log('state')
@@ -89,7 +91,7 @@ class App extends Component {
     const synth = this.state.synth
     synth.set("oscillator", {"type": "sine"})
     synth.set("volume", -12)
-    synth.set("envelope", {"release": 2})
+    synth.set("envelope", {decay: 0.2, sustain: 0.3, release: 0.4})
     // synth.set('filter', {Q: 0, rolloff: -12})
     // synth.set("filterEnvelope", {attack: 0.01, octaves: 1, decay: 0.8,
       // baseFrequency: 2000, release: 2})

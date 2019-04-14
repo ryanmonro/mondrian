@@ -42,6 +42,7 @@ class Composition {
         if (note !== 0 && isPlaying) {
           if (!tile.isPlaying) {
             tile.isPlaying = true
+            tile.duration = 1 / row.tiles.length
             // to ensure the first note gets played
             if (playNow || (this.firstBar === true && tile.col === 0)) {
               tiles.push(tile)
@@ -53,7 +54,6 @@ class Composition {
       }
     }
     if (lastStep) {
-      console.log(this.barCount)
       if (this.firstBar === true ) {
         this.firstBar = false
       }
@@ -142,6 +142,7 @@ class CompositionRow {
 class CompositionTile {
   constructor(row, col, randomise=false){
     this.note = 0
+    this.duration = 0
     this.row = row
     this.col = col
     this.isPlaying = false
