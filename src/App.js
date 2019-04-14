@@ -33,7 +33,7 @@ class App extends Component {
           
         }, "1i")
         Tone.start()
-        Tone.context.latencyHint = "interactive"
+        // Tone.context.latencyHint = "interactive"
         Tone.Transport.start()
         this.state.updateComposition((c)=>{
           c.play()
@@ -86,7 +86,10 @@ class App extends Component {
     const synth = this.state.synth
     synth.set("oscillator", {"type": "sine"})
     synth.set("volume", -12)
-    synth.set("envelope", {"attack": .015, "release": 2})
+    synth.set("envelope", {"release": 2})
+    // synth.set('filter', {Q: 0, rolloff: -12})
+    // synth.set("filterEnvelope", {attack: 0.01, octaves: 1, decay: 0.8,
+      // baseFrequency: 2000, release: 2})
     this.setState({synth: synth})
   }
   render() {

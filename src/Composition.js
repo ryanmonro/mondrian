@@ -2,9 +2,9 @@ const MINROWS = 1
 const MAXROWS = 6
 const MINWIDTH = 1
 const MAXWIDTH = 9
-const CHANCEOFREST = 0.4
+const CHANCEOFREST = 0.3
 const NOTES = [0, 'C', 'D', 'E', 'G', 'A']
-const SUBDIVS = [2,3,4,5,6,8]
+const SUBDIVS = [2,3,4,5,8]
 const INITIALROWS = 4
 const AUTOBARS = 4
 
@@ -23,6 +23,9 @@ class Composition {
   }
   toggleAuto(){
     this.auto = !this.auto
+    if (this.auto) {
+      this.barCount = 1
+    }
   }
   tilesToPlayAtPosition = (current, total)=>{
     const tiles = []

@@ -25,7 +25,7 @@ class AboutModal extends Component {
           </Typography>
           <Typography variant="body1" style={{flex: 3}}>
             Each row represents an octave.<br />
-            Tile colour determines the note (white is a rest).<br />
+            Tile colour determines the note.<br />
             Tile width determines note length.<br />
             Click the edge buttons (or swipe on mobile) to add/subtract tiles or rows.<br />
             Auto mode randomises the board every four bars.
