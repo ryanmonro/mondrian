@@ -69,7 +69,11 @@ class App extends Component {
       },
       buttonSize: desktop ? 40 : 20,
       marginTop: (whitespaceHeight - boardSize) / 2,
-      desktop: desktop
+      desktop: desktop,
+      windowDimensions: {
+        height: windowHeight,
+        width: windowWidth
+      }
     })
 
   }

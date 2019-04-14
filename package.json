@@ -12,7 +12,8 @@
     "react-dom": "^16.8.4",
     "react-scripts": "2.1.8",
     "react-touch": "^0.4.4",
-    "tone": "^13.4.9"
+    "tone": "^13.4.9",
+    "typeface-lato": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts start",
