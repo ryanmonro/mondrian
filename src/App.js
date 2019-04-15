@@ -26,11 +26,9 @@ class App extends Component {
           const tiles = c.tilesToPlayAtPosition(position, ticksPerBar)
           for(const tile of tiles){
             const duration = 60 * 4 * tile.duration / Tone.Transport.bpm.value / 2
-            console.log(duration)
             this.state.synth.triggerAttackRelease(tile.midiNote(), duration, time)
           }
-          if (tiles.length > 0) {
-            console.log('state')
+          if (tiles.length > 0 || position === ticksPerBar - 1) {
             this.setState((prevState)=>{
               return {composition: c}
             })
@@ -52,7 +50,6 @@ class App extends Component {
       },
       updateComposition: (fn) => {
         this.setState((prevState) => {
-          console.log('state')
           fn(prevState.composition)
           return {composition: prevState.composition}
         })

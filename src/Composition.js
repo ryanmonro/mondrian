@@ -34,17 +34,19 @@ class Composition {
       const tileCount = row.tiles.length
       for(const tile of row.tiles){
         const note = NOTES[tile.note]
-        const tileStartPosition = Math.ceil(tile.col * total / tileCount)
-        const nextTileStartPosition = Math.ceil((tile.col + 1) * total / tileCount)
-        const playNow = current === tileStartPosition
-        const isPlaying = current >= tileStartPosition &&
-          current < nextTileStartPosition
+        const tileSteps = Math.floor(total / row.tiles.length)
+        const tileStart = Math.ceil(tile.col * total / tileCount)
+        const tileHalf = tileStart + (tileSteps / 2)
+        // const tileEnd = Math.ceil((tile.col + 1) * total / tileCount) - 1
+        const playNow = current === tileStart
+        const isPlaying = current >= tileStart &&
+          current < tileHalf
+        const firstBarFirstNote = (this.firstBar && tile.col === 0)
         if (note !== 0 && isPlaying) {
           if (!tile.isPlaying) {
             tile.isPlaying = true
             tile.duration = 1 / row.tiles.length
-            // to ensure the first note gets played
-            if (playNow || (this.firstBar === true && tile.col === 0)) {
+            if (playNow || firstBarFirstNote) {
               tiles.push(tile)
             }
           }
@@ -54,9 +56,7 @@ class Composition {
       }
     }
     if (lastStep) {
-      if (this.firstBar === true ) {
-        this.firstBar = false
-      }
+      this.firstBar = false
       if (this.randomiseNext === true) {
         this.randomiseRows()
       } else if (this.auto === true) {

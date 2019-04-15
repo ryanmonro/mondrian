@@ -7,7 +7,6 @@ const colours = [
   "#FCD318", // yellow
   "#344D90", // blue
   "#A3A3A3", // grey
-  // "#548417", // green
   "#212121" // black
 ]
 
