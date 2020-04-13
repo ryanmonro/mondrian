@@ -29,8 +29,10 @@ class App extends Component {
             this.state.synth.triggerAttackRelease(tile.midiNote(), duration, time)
           }
           if (tiles.length > 0 || position === ticksPerBar - 1) {
-            this.setState((prevState)=>{
-              return {composition: c}
+            Tone.Draw.schedule((time)=> {
+              this.setState((prevState)=>{
+                return {composition: c}
+              })
             })
           }
           
