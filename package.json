@@ -10,7 +10,7 @@
     "normalize.css": "^8.0.1",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8",
+    "react-scripts": "5.0.1",
     "react-touch": "^0.4.4",
     "tone": "^13.4.9",
     "typeface-lato": "0.0.54"
